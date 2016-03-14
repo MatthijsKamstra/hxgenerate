@@ -1,5 +1,7 @@
 #HxGenerate
 
+![](icon.png)
+
 I start a lots of little [Haxe](http://www.haxe.org) projects, and use HIDE to create them.  
 Seem silly to open an unfinished editor and generate a folder structure I will open in Sublime Text or VSCode
 
