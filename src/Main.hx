@@ -20,7 +20,7 @@ class Main
 	private var projectName 	: String = 'Foobar';
 	private var projectAuthor 	: String = 'Matthijs Kamstra aka [mck]';
 	private var projectLicense 	: String = 'MIT';
-	private var projectWebsite 	: String = 'http://www.matthijskamstra.nl/blog/';
+	private var projectWebsite 	: String = '';
 	
 	private var targetArr : Array<String> = ["cp", "js", "swf" , "as3", "neko","php", "cpp", "cs", "java", "python"];
 	
@@ -150,6 +150,11 @@ projectLicense : ${projectLicense}
 ------------------');
 	}
 	
+	/**
+	 * NPM project.json / folder-names
+	 *		- name must be lower-case
+	 * 		- no spaces in the name
+	 */
 	private function sanitize(str:String) : String
 	{
 		return str.replace(' ', '_').replace(':', '').replace('/','').toLowerCase();
@@ -177,7 +182,8 @@ neko hxgenerate -cd \'path/to/folder\' -name \'awsome project\' -license \'none\
 	private function createHx(path:String, name:String) : Void
 	{
 		var str = 'package;
-		
+
+
 /**
  * @author ${projectAuthor}
  * ${projectLicense}
@@ -249,9 +255,17 @@ class Main {
 #this class wil be used as entry point for your app.
 -main Main
 
-#neko target
--${projectTarget} bin/${sanitize(projectName)}.${projectTarget}
+#${projectTarget} target
+';
 
+// [mck] every target should have it's own export setting
+switch (projectTarget) {
+	case 'php': str += '-${projectTarget} bin/www';
+	default : str += '-${projectTarget} bin/${sanitize(projectName)}.${projectTarget}';
+}
+
+
+str += '
 #Add debug information
 -debug
 
@@ -276,7 +290,7 @@ class Main {
 	{
 		var str = '{
 	"license": "${projectLicense}",
-	"name": "${projectName}",
+	"name": "${sanitize(projectName)}",
 	"version": "1.0.0",
 	"description": "",
 	"private": true,
@@ -332,9 +346,16 @@ Great for testing js
 > Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, https, chrome-extension-resource.
 
 ```
-
 cd \'${projectFolder}${sanitize(projectName)}\'
 haxe build.hxml
+';
+
+switch (projectTarget) {
+	case 'php': str += 'cd \'${projectFolder}${sanitize(projectName)}/bin/www\'';
+	default : str += 'cd \'${projectFolder}${sanitize(projectName)}\'';
+}
+
+str += '
 open -a Google\\ Chrome http://localhost:2000/
 nekotools server
 
