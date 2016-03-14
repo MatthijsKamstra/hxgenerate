@@ -9,7 +9,7 @@ I now generate Haxe project folders with HxGenerate.
 ## how to use:
 
 ```
-hxgenerate -cd 'path/to/folder' -name 'awsome project' -license 'none' -author 'that would be you' -target 'neko'
+neko hxgenerate -cd 'path/to/folder' -name 'awsome project' -license 'none' -author 'that would be you' -target 'neko'
 
 	-help : show this help
 	-cd or -folder : path to project folder

@@ -17,8 +17,8 @@
 -dce full
 
 -cmd neko bin/hxgenerate.n
--cmd neko bin/hxgenerate.n -cd '/Volumes/Data HD/Users/matthijs/Documents/workingdir/haxe/hxgenerate/bin/' -name 'Bazooo' -author 'Matthijs Kamstra [mck]'
--cmd neko bin/hxgenerate.n -cd '/Volumes/Data HD/Users/matthijs/Documents/workingdir/haxe/hxgenerate/bin/' -name 'Project name in terminal'
+-cmd neko bin/hxgenerate.n -cd '/Volumes/Data HD/Users/matthijs/Documents/workingdir/haxe/hxgenerate/bin' -name 'Bazooo' -author 'Matthijs Kamstra [mck]' -target php
+-cmd neko bin/hxgenerate.n -cd '/Volumes/Data HD/Users/matthijs/Documents/workingdir/haxe/hxgenerate/bin/' -name 'Project name in terminal' -target js
 -cmd nekotools boot bin/hxgenerate.n
 # -cmd sudo cp bin/hxgenerate /usr/bin/
 # -cmd cd bin/test/

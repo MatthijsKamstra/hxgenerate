@@ -20,6 +20,9 @@ class Main
 	private var projectName 	: String = 'Foobar';
 	private var projectAuthor 	: String = 'Matthijs Kamstra aka [mck]';
 	private var projectLicense 	: String = 'MIT';
+	private var projectWebsite 	: String = 'http://www.matthijskamstra.nl/blog/';
+	
+	private var targetArr : Array<String> = ["cp", "js", "swf" , "as3", "neko","php", "cpp", "cs", "java", "python"];
 	
 	
 	public function new(?args : Array<String>) : Void
@@ -33,19 +36,20 @@ class Main
 		for ( i in 0 ... args.length ) {
 			var temp = args[i];
 			switch (temp) {
-				case '-cd','-folder': projectFolder = args[i+1]; isFolderSet = true;
-				case '-name': projectName = args[i+1];
-				case '-license': projectLicense = args[i+1];
-				case '-author': projectAuthor = args[i+1];
-				case '-target': projectTarget = validateTarget(args[i+1]);
-				case '-help': showHelp();
+				case '-cd','-folder': 	projectFolder = validateFolder(args[i+1]); isFolderSet = true;
+				case '-name': 			projectName = args[i+1];
+				case '-license': 		projectLicense = args[i+1];
+				case '-author': 		projectAuthor = args[i+1];
+				case '-target': 		projectTarget = validateTarget(args[i+1]);
+				case '-website': 		projectWebsite = args[i+1];
+				case '-help': 			showHelp();
 				
 				// default : trace ("case '"+temp+"': trace ('"+temp+"');");
 			}
 		}
 
 		if (!isFolderSet){
-			trace('Sorry I need a folder to export to');
+			Sys.println('ERROR :: Sorry I need a folder to export to');
 			showHelp();
 			return;
 		}
@@ -72,9 +76,30 @@ class Main
 	}
 	
 
-	public function validateTarget (target:String) : String {
+	public function validateTarget (target:String) : String 
+	{
+		var isValidTarget = false;
+		for ( i in 0 ... targetArr.length ) {
+			if(target == targetArr[i]) isValidTarget = true;
+		}
+		if(!isValidTarget) Sys.println('ERROR :: I don\'t know this target (${target}), must be an experimental');
 		return target;
 	}
+	
+	/*
+	*  clean up folder structure
+	* 	 - no spaces at the start and end of the path
+	* 	 - has to end with a backslash ("/")
+	*/
+	function validateFolder (folder:String) : String 
+	{
+		folder = folder.ltrim().rtrim();
+		if (folder.charAt(folder.length-1) != "/"){
+			folder += "/";
+		}		
+		return folder;
+	}
+	
 	
 	private function readConfig() : Void
 	{
@@ -133,17 +158,17 @@ projectLicense : ${projectLicense}
 	
 	private function showHelp () : Void {
 		Sys.println('
-
 HX-GENERATE
 
 how to use: 
-hxgenerate -cd \'path/to/folder\' -name \'awsome project\' -license \'none\' -author \'that would be you\' -target \'neko\'
+neko hxgenerate -cd \'path/to/folder\' -name \'awsome project\' -license \'none\' -author \'that would be you\' -target \'neko\'
 
 	-help : show this help
 	-cd or -folder : path to project folder 
 	-name : project Name (name also used for the name of the generate folder)
 	-license : project license (MIT, etc)
 	-author : project author (you?)
+	-website : project website (from you?)
 	-target : project target (js, cpp, flash, neko, etc)		
 		
 ');
@@ -155,7 +180,9 @@ hxgenerate -cd \'path/to/folder\' -name \'awsome project\' -license \'none\' -au
 		
 /**
  * @author ${projectAuthor}
- */	
+ * ${projectLicense}
+ * ${projectWebsite}
+ */ 
 class Main {
 	
 	public function new () {
@@ -274,8 +301,9 @@ class Main {
 
 - project target: ${projectTarget}
 - project folder: ${projectFolder}${sanitize(projectName)}
-- project author: ${projectAuthor}
 - project license: ${projectLicense}
+- project author: ${projectAuthor}
+- project website: ${projectWebsite}
 	
 ';
 
@@ -345,7 +373,8 @@ npm run watch
 			target : projectTarget,
 			name : projectName,
 			author : projectAuthor,
-			license : projectLicense
+			license : projectLicense,
+			website : projectWebsite
 		}
 		
 		writeFile('../','hxgenerate.json',haxe.Json.stringify(temp));	
@@ -380,4 +409,5 @@ typedef HxGenConfig =
 	var name : String;// = 'Foobar';
 	var author : String;// = 'Matthijs Kamstra aka [mck]';
 	var license : String;// = 'MIT';
+	var website : String;
 }
