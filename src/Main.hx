@@ -22,7 +22,7 @@ class Main
 	private var projectLicense 	: String = 'MIT';
 	private var projectWebsite 	: String = '';
 	
-	private var targetArr : Array<String> = ["cp", "js", "swf" , "as3", "neko","php", "cpp", "cs", "java", "python"];
+	private var targetArr : Array<String> = ["cpp", "js", "flash", "neko", "php", "cs", "java", "python"];
 	
 	
 	public function new(?args : Array<String>) : Void
@@ -61,10 +61,12 @@ class Main
 		createFolder(sanitize(projectName));
 		createFolder(sanitize(projectName)+'/bin');
 		createFolder(sanitize(projectName)+'/src');
+		createFolder(sanitize(projectName)+'/_build');
 		
 		createHx(sanitize(projectName)+'/src','Main.hx');
 		createIndex(sanitize(projectName)+'/bin','index.html');
-		createHxml(sanitize(projectName),'build.hxml');
+		createBuildTargets(sanitize(projectName)+'/_build');
+		createHxml(sanitize(projectName),'build.hxml', projectTarget);
 		createPackage(sanitize(projectName),'package.json');
 		createReadme(sanitize(projectName),'README.MD');
 		createBuild(sanitize(projectName),'BUILD.MD');
@@ -90,10 +92,12 @@ class Main
 	*  clean up folder structure
 	* 	 - no spaces at the start and end of the path
 	* 	 - has to end with a backslash ("/")
+	* 	 - remove \ to escape folder structures with spaces in it `Volume/foobar/this\ is\ bad/`
 	*/
 	function validateFolder (folder:String) : String 
 	{
 		folder = folder.ltrim().rtrim();
+		folder = folder.replace("\\ "," ");
 		if (folder.charAt(folder.length-1) != "/"){
 			folder += "/";
 		}		
@@ -244,10 +248,12 @@ class Main {
 		Sys.println('\tcreate createIndex');
 	}
 	
-	private function createHxml(path:String, name:String) : Void
+	private function createHxml(path:String, name:String, target:String) : Void
 	{
-		var str = '#libs
+		var str = '#libraries you like to use (http://lib.haxe.org/)
 # -lib markdown
+# -lib svglib
+# -lib jQueryExtern
 		
 #integrate files to classpath
 -cp src
@@ -255,17 +261,35 @@ class Main {
 #this class wil be used as entry point for your app.
 -main Main
 
-#${projectTarget} target
+#${target} target
 ';
 
 // [mck] every target should have it's own export setting
-switch (projectTarget) {
-	case 'php': str += '-${projectTarget} bin/www';
-	default : str += '-${projectTarget} bin/${sanitize(projectName)}.${projectTarget}';
+switch (target) {
+	case 'php': str += '-${target} bin/www';
+	case 'cpp': str += '-${target} bin';
+	case 'cs': str += '-${target} bin/${sanitize(projectName)}.exe';
+	case 'java': str += '-${target} bin/${sanitize(projectName)}.jar';
+	case 'flash': str += '-swf bin/${sanitize(projectName)}.swf';
+	case 'neko': str += '-${target} bin/${sanitize(projectName)}.n';
+	case 'python': str += '-${target} bin/${sanitize(projectName)}.py';
+	case 'js': 
+		str += '-${target} bin/${sanitize(projectName)}.js';
+		str += '
+
+#You can use -D source-map-content (requires Haxe 3.1+) to have the .hx 
+#files directly embedded into the map file, this way you only have to 
+#upload it, and it will be always in sync with the compiled .js even if 
+#you modify your .hx files.
+-D source-map-content
+
+';
+	default : str += '-${target} bin/${sanitize(projectName)}.${target}';
 }
 
 
 str += '
+
 #Add debug information
 -debug
 
@@ -278,14 +302,36 @@ str += '
 #"-dce full" : remove all unused code
 -dce full
 
-#Additional commandline stuff can be here
-# -cmd neko bin/${projectName}.n
-# -cmd open -a Google\\ Chrome http://localhost:2000/
+#Additional commandline actions can be done here
 ';
 
+
+// [mck] every target should have it's own command settings
+switch (target) {
+	case 'js': 
+		str += '# -cmd open -a Google\\ Chrome http://localhost:2000/\n';
+		str += '# -cmd nekotools server';
+	case 'php': str += '# -cmd open -a Google\\ Chrome http://localhost:2000/';
+	case 'neko': 
+		str += '# -cmd ${target} bin/${sanitize(projectName)}.n\n';
+		str += '# -cmd nekotools boot bin/${sanitize(projectName)}.n';
+	// default : str += '-${target} bin/${sanitize(projectName)}.${target}';
+}
+ 
 		writeFile(path, name, str);
-		Sys.println('\tcreate createHxml');
+		Sys.println('\t\tcreate ${target}.hxml');
 	}
+	
+	
+	function createBuildTargets (path:String)
+	{
+		Sys.println('\tcreate all buildtarget');
+		for ( i in 0 ... targetArr.length ) {
+			createHxml(path, '${targetArr[i]}.hxml', targetArr[i]);	
+		}		
+	}
+	
+	
 	private function createPackage(path:String, name:String) : Void
 	{
 		var str = '{

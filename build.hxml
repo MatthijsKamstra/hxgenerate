@@ -17,6 +17,8 @@
 -dce full
 
 -cmd neko bin/hxgenerate.n
+# test cases
+-cmd neko bin/hxgenerate.n -cd '/Volumes/Data\ HD/Users/matthijs/Documents/workingdir/haxe/hxgenerate/bin' -name 'Cazooo' -author 'test me #$%' -target neko
 -cmd neko bin/hxgenerate.n -cd '/Volumes/Data HD/Users/matthijs/Documents/workingdir/haxe/hxgenerate/bin' -name 'Bazooo' -author 'Matthijs Kamstra [mck]' -target php
 -cmd neko bin/hxgenerate.n -cd '/Volumes/Data HD/Users/matthijs/Documents/workingdir/haxe/hxgenerate/bin/' -name 'Project name in terminal' -target js
 -cmd nekotools boot bin/hxgenerate.n
