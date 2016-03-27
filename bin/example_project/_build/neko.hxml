@@ -1,0 +1,29 @@
+#libraries you like to use (http://lib.haxe.org/)
+# -lib markdown
+# -lib svglib
+# -lib jQueryExtern
+		
+#integrate files to classpath
+-cp src
+
+#this class wil be used as entry point for your app.
+-main Main
+
+#neko target
+-neko bin/example_project.n
+
+#Add debug information
+-debug
+
+# resources like templates
+# -resource src/assets/LICENSE@licence
+
+#dead code elimination : remove unused code
+#"-dce no" : do not remove unused code
+#"-dce std" : remove unused code in the std lib (default)
+#"-dce full" : remove all unused code
+-dce full
+
+#Additional commandline actions can be done here
+# -cmd neko bin/example_project.n
+# -cmd nekotools boot bin/example_project.n
