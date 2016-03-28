@@ -16,12 +16,7 @@
 #"-dce full" : remove all unused code
 -dce full
 
-# create executable file
--cmd neko bin/hxgenerate.n
-# test cases
--cmd neko bin/hxgenerate.n -cd '/Volumes/Data\ HD/Users/matthijs/Documents/workingdir/haxe/hxgenerate/bin' -name 'Example project' -author 'Matthijs Kamstra aka[mck]' -target 'js' -website 'http://www.matthijskamstra.nl/'
--cmd neko bin/hxgenerate.n -cd '/Volumes/Data\ HD/Users/matthijs/Documents/workingdir/haxe/hxgenerate/bin' -name 'Cazooo' -author 'test me #$%' -target neko
--cmd neko bin/hxgenerate.n -cd '/Volumes/Data HD/Users/matthijs/Documents/workingdir/haxe/hxgenerate/bin' -name 'Bazooo' -author 'Matthijs Kamstra [mck]' -target php
--cmd neko bin/hxgenerate.n -cd '/Volumes/Data HD/Users/matthijs/Documents/workingdir/haxe/hxgenerate/bin/' -name 'Project name in terminal' -target js
 # create executable file with no extension.
 -cmd nekotools boot bin/hxgenerate.n
+# test, should see help files
+-cmd neko bin/hxgenerate
