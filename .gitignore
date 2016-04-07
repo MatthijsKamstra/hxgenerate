@@ -4,3 +4,7 @@ hxgenerate.json
 _design
 bin/cazooo
 test.hxml
+bin/example_java
+bin/example_js
+bin/example_neko
+bin/example_php

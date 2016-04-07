@@ -14,7 +14,8 @@ using StringTools;
  */
 class Main
 {
-	
+	private var VERSION : String = '0.0.2';
+
 	private var projectFolder 	: String = "";
 	private var projectTarget 	: String = 'js';
 	private var projectName 	: String = 'Foobar';
@@ -64,7 +65,7 @@ class Main
 		createFolder(sanitize(projectName)+'/_build');
 		
 		createHx(sanitize(projectName)+'/src','Main.hx');
-		createIndex(sanitize(projectName)+'/bin','index.html');
+		if(projectTarget == 'js') createIndex(sanitize(projectName)+'/bin','index.html');
 		createBuildTargets(sanitize(projectName)+'/_build');
 		createHxml(sanitize(projectName),'build.hxml', projectTarget);
 		createPackage(sanitize(projectName),'package.json');
@@ -113,11 +114,11 @@ class Main
 			var str = (sys.io.File.getContent(folder +  'hxgenerate.json'));
 			json = haxe.Json.parse(str);
 		
-			projectFolder = json.folder;
-			projectTarget = json.target;
-			projectName = json.name;
-			projectAuthor  = json.author;
-			projectLicense = json.license;
+			projectFolder 	= json.folder;
+			projectTarget 	= json.target;
+			projectName 	= json.name;
+			projectAuthor  	= json.author;
+			projectLicense 	= json.license;
 		} else {
 			Sys.println('ERROR: can\'t find the config (${folder}hxgenerate.json)');
 		}
@@ -196,7 +197,7 @@ neko hxgenerate -cd \'path/to/folder\' -name \'awsome project\' -license \'none\
 class Main {
 	
 	public function new () {
-		trace( "Hello ${projectName}" );
+		trace( "Hello \'${projectName}\'" );
 	}
 
 	static public function main () {
@@ -250,18 +251,18 @@ class Main {
 	
 	private function createHxml(path:String, name:String, target:String) : Void
 	{
-		var str = '#libraries you like to use (http://lib.haxe.org/)
+		var str = '# Libraries you like to use (http://lib.haxe.org/)
 # -lib markdown
 # -lib svglib
 # -lib jQueryExtern
 		
-#integrate files to classpath
+# Integrate files to classpath
 -cp src
 
-#this class wil be used as entry point for your app.
+# This class wil be used as entry point for your app.
 -main Main
 
-#${target} target
+# ${target} target
 ';
 
 // [mck] every target should have it's own export setting
@@ -269,7 +270,7 @@ switch (target) {
 	case 'php': str += '-${target} bin/www';
 	case 'cpp': str += '-${target} bin';
 	case 'cs': str += '-${target} bin/${sanitize(projectName)}.exe';
-	case 'java': str += '-${target} bin/${sanitize(projectName)}.jar';
+	case 'java': str += '-${target} bin/java';// ${sanitize(projectName)}.jar';
 	case 'flash': str += '-swf bin/${sanitize(projectName)}.swf';
 	case 'neko': str += '-${target} bin/${sanitize(projectName)}.n';
 	case 'python': str += '-${target} bin/${sanitize(projectName)}.py';
@@ -277,10 +278,10 @@ switch (target) {
 		str += '-${target} bin/${sanitize(projectName)}.js';
 		str += '
 
-#You can use -D source-map-content (requires Haxe 3.1+) to have the .hx 
-#files directly embedded into the map file, this way you only have to 
-#upload it, and it will be always in sync with the compiled .js even if 
-#you modify your .hx files.
+# You can use -D source-map-content (requires Haxe 3.1+) to have the .hx 
+# files directly embedded into the map file, this way you only have to 
+# upload it, and it will be always in sync with the compiled .js even if 
+# you modify your .hx files.
 -D source-map-content
 
 ';
@@ -290,28 +291,34 @@ switch (target) {
 
 str += '
 
-#Add debug information
+# Add debug information
 -debug
 
-# resources like templates
+# Resources like templates
 # -resource src/assets/LICENSE@licence
 
-#dead code elimination : remove unused code
-#"-dce no" : do not remove unused code
-#"-dce std" : remove unused code in the std lib (default)
-#"-dce full" : remove all unused code
+# Dead code elimination : remove unused code
+# "-dce no" : do not remove unused code
+# "-dce std" : remove unused code in the std lib (default)
+# "-dce full" : remove all unused code
 -dce full
 
-#Additional commandline actions can be done here
+# Add extra targets
+# --next
+
+# Additional commandline actions can be done here
 ';
 
 
 // [mck] every target should have it's own command settings
 switch (target) {
+	case 'java':
+		str += '# run our application\n-cmd cd bin/java\n-cmd java -jar Main-Debug.jar\n';
 	case 'js': 
 		str += '# -cmd open -a Google\\ Chrome http://localhost:2000/\n';
 		str += '# -cmd nekotools server';
-	case 'php': str += '# -cmd open -a Google\\ Chrome http://localhost:2000/';
+	case 'php': 
+		str += '# -cmd open -a Google\\ Chrome http://localhost:2000/';
 	case 'neko': 
 		str += '# -cmd ${target} bin/${sanitize(projectName)}.n\n';
 		str += '# -cmd nekotools boot bin/${sanitize(projectName)}.n';
@@ -375,7 +382,7 @@ switch (target) {
 	{
 		var str = '#Build ${projectName}
 
-Default methode to build this file
+Default methode to build this project
 		
 ```
 cd \'${projectFolder}${sanitize(projectName)}\'
@@ -383,7 +390,10 @@ haxe build.hxml
 echo done
 
 ```
+';
 
+if(projectTarget == 'js'){
+	str += '
 #Build ${projectName} and start nekoserver and browser
 
 Same as previous, but also start nekoserver and open Google Chrome browser.  
@@ -397,6 +407,7 @@ haxe build.hxml
 ';
 
 switch (projectTarget) {
+	case 'java': str += 'cd \'${projectFolder}${sanitize(projectName)}/bin/java\'';
 	case 'php': str += 'cd \'${projectFolder}${sanitize(projectName)}/bin/www\'';
 	default : str += 'cd \'${projectFolder}${sanitize(projectName)}\'';
 }
@@ -405,13 +416,13 @@ str += '
 open -a Google\\ Chrome http://localhost:2000/
 nekotools server
 
-
 ```
-
+';
+}
+	str += '
 #Build ${projectName} using NPM watch
 
 ```
-
 cd \'${projectFolder}${sanitize(projectName)}\'
 npm run watch
 

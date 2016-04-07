@@ -9,7 +9,7 @@ package;
 class Main {
 	
 	public function new () {
-		trace( "Hello Example project" );
+		trace( "Hello 'Example project'" );
 	}
 
 	static public function main () {
