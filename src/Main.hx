@@ -192,15 +192,22 @@ neko hxgenerate -cd \'path/to/folder\' -name \'awsome project\' -license \'none\
 		
 ');
 	}
-
-	private function createHx(path:String, name:String) : Void
+	
+	/**
+	 * createHx 
+	 *
+	 * @param		path  			where Should the file be saved (example : sanitize(projectName)+'/src')
+	 * @param		name    		name of the file (example: 'Main.hx')
+	 * @param		templateName	name of the template (default 'Main')
+	 */
+	private function createHx(path:String, name:String, ?templateName:String = "Main") : Void
 	{
-		var str = haxe.Resource.getString("Main");
+		var str = haxe.Resource.getString('$templateName');
         var t = new haxe.Template(str);
         var output = t.execute({ projectAuthor : projectAuthor, projectFolder : projectFolder, projectLicense: projectLicense, projectWebsite : projectWebsite, projectName : projectName });
 		
 		writeFile(path, name, output);
-		Sys.println('\tcreate createHx');
+		Sys.println('\tcreate create${name}Hx');
 	}
 	
 	private function createIndex(path:String, name:String) : Void
@@ -243,7 +250,7 @@ neko hxgenerate -cd \'path/to/folder\' -name \'awsome project\' -license \'none\
 		Sys.println('\tcreate createIndex');
 	}
 	
-	private function createHxml(path:String, name:String, target:String) : Void
+	private function createHxml(path:String, name:String, target:String, ?content:String) : Void
 	{
 		var str = '# Libraries you like to use (http://lib.haxe.org/)
 # -lib markdown
@@ -312,12 +319,15 @@ switch (target) {
 		str += '# -cmd open -a Google\\ Chrome http://localhost:2000/\n';
 		str += '# -cmd nekotools server';
 	case 'php': 
-		str += '# -cmd open -a Google\\ Chrome http://localhost:2000/';
+		str += '# -cmd open -a Google\\ Chrome http://localhost:2000/\n';
 	case 'neko': 
+		str += '-cmd nekotools boot bin/${sanitize(projectName)}.n\n';
 		str += '# -cmd ${target} bin/${sanitize(projectName)}.n\n';
-		str += '# -cmd nekotools boot bin/${sanitize(projectName)}.n';
 	// default : str += '-${target} bin/${sanitize(projectName)}.${target}';
 }
+ 
+ 
+ 		if(content != null) str = content; 
  
 		writeFile(path, name, str);
 		Sys.println('\t\tcreate ${target}.hxml');
@@ -457,20 +467,22 @@ npm run watch
 	function createXperimental() {
 		switch (projectTarget) 
 		{
-			case 'neko': createNekoMain(sanitize(projectName)+'/src','Main.hx', 'MainNeko');
+			case 'neko': 
+				createHx(sanitize(projectName)+'/src','Main.hx', 'MainNeko');
+				createHxml(sanitize(projectName),'test.hxml', projectTarget, '# Clean up
+-cmd echo \'------------- Remove old data and build ------------\'
+-cmd rm -rf bin
+# Build everything like normal
+-cmd haxe build.hxml
+-cmd echo \'------------- TEST ------------\'
+# Test cases
+-cmd neko bin/${sanitize(projectName)}.n -h
+');
 			default : Sys.println('\tthere is no -x for ${projectTarget} yet!');
 		}
 	}
 	
-	private function createNekoMain(path:String, name:String, templateName:String) : Void
-	{
-		var str = haxe.Resource.getString('$templateName');
-        var t = new haxe.Template(str);
-        var output = t.execute({ projectAuthor : projectAuthor, projectFolder : projectFolder, projectLicense: projectLicense, projectWebsite : projectWebsite, projectName : projectName });
-		
-		writeFile(path, name, output);
-		Sys.println('\tcreate createNeko${name}Hx');
-	}
+
 	
 	
 	

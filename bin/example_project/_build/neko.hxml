@@ -28,5 +28,5 @@
 # --next
 
 # Additional commandline actions can be done here
+-cmd nekotools boot bin/example_project.n
 # -cmd neko bin/example_project.n
-# -cmd nekotools boot bin/example_project.n
