@@ -14,9 +14,14 @@ using StringTools;
  */
 class Main
 {
-	private var VERSION : String = '0.0.2';
+	/**
+	* 0.0.3 -x added, using haxe.template
+	* 0.0.2 update all target, add more output nicities 
+	* 0.0.1 initial 
+	*/
+	private var VERSION : String = '0.0.3';
 
-	private var projectFolder 	: String = "";
+	private var projectFolder 	: String = '';
 	private var projectTarget 	: String = 'js';
 	private var projectName 	: String = 'Foobar';
 	private var projectAuthor 	: String = 'Matthijs Kamstra aka [mck]';
@@ -25,6 +30,7 @@ class Main
 	
 	private var targetArr : Array<String> = ["cpp", "js", "flash", "neko", "php", "cs", "java", "python"];
 	
+	var isXperimental: Bool = false;
 	
 	public function new(?args : Array<String>) : Void
 	{
@@ -37,13 +43,14 @@ class Main
 		for ( i in 0 ... args.length ) {
 			var temp = args[i];
 			switch (temp) {
-				case '-cd','-folder': 	projectFolder = validateFolder(args[i+1]); isFolderSet = true;
-				case '-name': 			projectName = args[i+1];
-				case '-license': 		projectLicense = args[i+1];
-				case '-author': 		projectAuthor = args[i+1];
-				case '-target': 		projectTarget = validateTarget(args[i+1]);
-				case '-website': 		projectWebsite = args[i+1];
-				case '-help': 			showHelp();
+				case '-cd','-folder': 		projectFolder = validateFolder(args[i+1]); isFolderSet = true;
+				case '-name', '-n': 		projectName = args[i+1];
+				case '-license', '-l': 		projectLicense = args[i+1];
+				case '-author','-a': 		projectAuthor = args[i+1];
+				case '-target','-t': 		projectTarget = validateTarget(args[i+1]);
+				case '-website','-w': 		projectWebsite = args[i+1];
+				case '-help','-h': 			showHelp();
+				case '-x': 					isXperimental = true;
 				
 				// default : trace ("case '"+temp+"': trace ('"+temp+"');");
 			}
@@ -74,6 +81,8 @@ class Main
 		createGitignore(sanitize(projectName),'.gitignore');
 		
 		storeDefault();
+		
+		if(isXperimental) createXperimental();
 		
 		Sys.println('HxGenerate :: done');
 	}
@@ -186,26 +195,11 @@ neko hxgenerate -cd \'path/to/folder\' -name \'awsome project\' -license \'none\
 
 	private function createHx(path:String, name:String) : Void
 	{
-		var str = 'package;
-
-
-/**
- * @author ${projectAuthor}
- * ${projectLicense}
- * ${projectWebsite}
- */ 
-class Main {
-	
-	public function new () {
-		trace( "Hello \'${projectName}\'" );
-	}
-
-	static public function main () {
-		var app = new Main ();
-	}
-}';
-
-		writeFile(path, name, str);
+		var str = haxe.Resource.getString("Main");
+        var t = new haxe.Template(str);
+        var output = t.execute({ projectAuthor : projectAuthor, projectFolder : projectFolder, projectLicense: projectLicense, projectWebsite : projectWebsite, projectName : projectName });
+		
+		writeFile(path, name, output);
 		Sys.println('\tcreate createHx');
 	}
 	
@@ -457,6 +451,25 @@ npm run watch
 		
 		writeFile('../','hxgenerate.json',haxe.Json.stringify(temp));	
 		Sys.println('\tcreate config');
+	}
+	
+	
+	function createXperimental() {
+		switch (projectTarget) 
+		{
+			case 'neko': createNekoMain(sanitize(projectName)+'/src','Main.hx', 'MainNeko');
+			default : Sys.println('\tthere is no -x for ${projectTarget} yet!');
+		}
+	}
+	
+	private function createNekoMain(path:String, name:String, templateName:String) : Void
+	{
+		var str = haxe.Resource.getString('$templateName');
+        var t = new haxe.Template(str);
+        var output = t.execute({ projectAuthor : projectAuthor, projectFolder : projectFolder, projectLicense: projectLicense, projectWebsite : projectWebsite, projectName : projectName });
+		
+		writeFile(path, name, output);
+		Sys.println('\tcreate createNeko${name}Hx');
 	}
 	
 	

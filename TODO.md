@@ -1,13 +1,6 @@
 # TODO
 
-
-
-
-# create target specific build.md 
-
-- js with `nekotools server`
-- php with `mamp`?
-
+- create more -x files 
 
 
 

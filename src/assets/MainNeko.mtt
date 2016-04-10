@@ -1,0 +1,46 @@
+package;
+
+/**
+ * @author ::projectAuthor::
+ * ::projectLicense::
+ * ::projectWebsite::
+ */ 
+class Main {
+	
+	/**
+	 * 0.0.1 	initial release
+	 */
+	private var VERSION : String = '0.0.1';
+	
+	public function new () {
+		trace( "Hello '::projectName::'" );
+
+		var args : Array<String> = args;
+		
+		for ( i in 0 ... args.length ) {
+			var temp = args[i];
+			switch (temp) {
+				case '-cd','-folder': 		// isFolderSet = true;
+				case '-help','-h': 			showHelp();
+				default : trace ("case '"+temp+"': trace ('"+temp+"');");
+			}
+		}
+	}
+
+	private function showHelp () : Void {
+		Sys.println('
+::projectName::
+
+how to use: 
+neko ::projectName:: -cd \'path/to/folder\'
+
+	-help : show this help
+	-cd or -folder : path to project folder 		
+		
+');
+	}
+
+	static public function main () {
+		var app = new Main (Sys.args());
+	}
+}
