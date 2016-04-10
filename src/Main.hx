@@ -27,6 +27,7 @@ class Main
 	private var projectAuthor 	: String = 'Matthijs Kamstra aka [mck]';
 	private var projectLicense 	: String = 'MIT';
 	private var projectWebsite 	: String = '';
+	private var projectXType 	: String = '';
 	
 	private var targetArr : Array<String> = ["cpp", "js", "flash", "neko", "php", "cs", "java", "python"];
 	
@@ -50,7 +51,7 @@ class Main
 				case '-target','-t': 		projectTarget = validateTarget(args[i+1]);
 				case '-website','-w': 		projectWebsite = args[i+1];
 				case '-help','-h': 			showHelp();
-				case '-x': 					isXperimental = true;
+				case '-x': 					projectXType = validateXType(args[i+1]); isXperimental = true;
 				
 				// default : trace ("case '"+temp+"': trace ('"+temp+"');");
 			}
@@ -82,7 +83,7 @@ class Main
 		
 		storeDefault();
 		
-		if(isXperimental) createXperimental();
+		if(isXperimental) createXperimental(projectXType);
 		
 		Sys.println('HxGenerate :: done');
 	}
@@ -96,6 +97,15 @@ class Main
 		}
 		if(!isValidTarget) Sys.println('ERROR :: I don\'t know this target (${target}), must be an experimental');
 		return target;
+	}
+	
+	function validateXType (type:String) : String
+	{
+		var str = '';
+		if(type != null && !type.startsWith('-')){
+			str = type;
+		}
+		return str;
 	}
 	
 	/*
@@ -216,7 +226,9 @@ neko hxgenerate -cd \'path/to/folder\' -name \'awsome project\' -license \'none\
 			projectLicense: projectLicense, 
 			projectWebsite : projectWebsite, 
 			projectName : projectName,
-			sprojectName : sanitize(projectName) });
+			sprojectName : sanitize(projectName),
+			classname : name.split('.')[0]
+		});
 		
 		writeFile(path, name, output);
 		Sys.println('\tcreate template create${name}Hx');
@@ -476,7 +488,13 @@ npm run watch
 	}
 	
 	
-	function createXperimental() {
+	function createXperimental(type:String) 
+	{
+		switch (type)
+		{
+			case 'test' : createWithTemplate(sanitize(projectName)+'/src','Test.hx', 'Class');
+		}
+	
 		switch (projectTarget) 
 		{
 			case 'neko': 

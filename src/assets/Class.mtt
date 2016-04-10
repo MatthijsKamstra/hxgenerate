@@ -1,0 +1,14 @@
+package;
+
+/**
+ * @author ::projectAuthor::
+ * ::projectLicense::
+ * ::projectWebsite::
+ */ 
+class ::classname:: {
+	
+	public function new () {
+		trace( "Hello ::classname::" );
+	}
+
+}
