@@ -12,7 +12,7 @@ class Main {
 	 */
 	private var VERSION : String = '0.0.1';
 	
-	public function new () {
+	public function new (?args : Array<String>) {
 		trace( "Hello '::projectName::'" );
 
 		var args : Array<String> = args;
