@@ -29,10 +29,10 @@ class Main {
 
 	private function showHelp () : Void {
 		Sys.println('
-::projectName::
+::sprojectName::
 
 how to use: 
-neko ::projectName:: -cd \'path/to/folder\'
+neko ::sprojectName:: -cd \'path/to/folder\'
 
 	-help : show this help
 	-cd or -folder : path to project folder 		

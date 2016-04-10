@@ -193,21 +193,33 @@ neko hxgenerate -cd \'path/to/folder\' -name \'awsome project\' -license \'none\
 ');
 	}
 	
+	private function createHx(path:String, name:String) : Void
+	{
+		createWithTemplate(path, name, "Main");
+		Sys.println('\tcreate ${name}');
+	}
+
 	/**
-	 * createHx 
+	 * createWithTemplate 
 	 *
 	 * @param		path  			where Should the file be saved (example : sanitize(projectName)+'/src')
 	 * @param		name    		name of the file (example: 'Main.hx')
 	 * @param		templateName	name of the template (default 'Main')
 	 */
-	private function createHx(path:String, name:String, ?templateName:String = "Main") : Void
+	function createWithTemplate(path:String, name:String, templateName:String) : Void
 	{
 		var str = haxe.Resource.getString('$templateName');
         var t = new haxe.Template(str);
-        var output = t.execute({ projectAuthor : projectAuthor, projectFolder : projectFolder, projectLicense: projectLicense, projectWebsite : projectWebsite, projectName : projectName });
+        var output = t.execute({ 
+			projectAuthor : projectAuthor, 
+			projectFolder : projectFolder, 
+			projectLicense: projectLicense, 
+			projectWebsite : projectWebsite, 
+			projectName : projectName,
+			sprojectName : sanitize(projectName) });
 		
 		writeFile(path, name, output);
-		Sys.println('\tcreate create${name}Hx');
+		Sys.println('\tcreate template create${name}Hx');
 	}
 	
 	private function createIndex(path:String, name:String) : Void
@@ -468,16 +480,8 @@ npm run watch
 		switch (projectTarget) 
 		{
 			case 'neko': 
-				createHx(sanitize(projectName)+'/src','Main.hx', 'MainNeko');
-				createHxml(sanitize(projectName),'test.hxml', projectTarget, '# Clean up
--cmd echo \'------------- Remove old data and build ------------\'
--cmd rm -rf bin
-# Build everything like normal
--cmd haxe build.hxml
--cmd echo \'------------- TEST ------------\'
-# Test cases
--cmd neko bin/${sanitize(projectName)}.n -h
-');
+				createWithTemplate(sanitize(projectName)+'/src','Main.hx', 'MainNeko');
+				createWithTemplate(sanitize(projectName),'test.hxml', 'buildNeko');
 			default : Sys.println('\tthere is no -x for ${projectTarget} yet!');
 		}
 	}

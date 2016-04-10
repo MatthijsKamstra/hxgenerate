@@ -1,0 +1,8 @@
+# Clean up
+-cmd echo \'------------- Remove old data and build ------------\'
+-cmd rm -rf bin
+# Build everything like normal
+-cmd haxe build.hxml
+-cmd echo \'------------- TEST ------------\'
+# Test cases
+-cmd neko bin/::sprojectName:: -h

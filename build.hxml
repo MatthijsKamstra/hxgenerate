@@ -13,6 +13,8 @@
 # Resources
 -resource src/assets/Main.mtt@Main
 -resource src/assets/MainNeko.mtt@MainNeko
+-resource src/assets/build.mtt@build
+-resource src/assets/buildNeko.mtt@buildNeko
 
 #dead code elimination : remove unused code
 #"-dce no" : do not remove unused code
