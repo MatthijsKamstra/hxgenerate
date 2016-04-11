@@ -1,10 +1,10 @@
-'{
-	"license": "MIT",
-	"name": "example_project",
+{
+	"license": "::projectLicense::",
+	"name": "::sprojectName::",
 	"version": "0.0.1",
 	"description": "",
 	"private": true,
-	"author": "Matthijs Kamstra aka[mck]",
+	"author": "::projectAuthor::",
 	"scripts": {
 		"prewatch": "haxe build.hxml",
 		"watch": "onchange 'src/*.hx' 'src/*/*.hx' -v -- haxe build.hxml"

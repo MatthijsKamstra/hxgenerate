@@ -11,3 +11,4 @@ bin/example_php
 vscode-project.hxml
 bin/example_neko_x
 bin/example_neko_x_test
+bin/example_js_x_flux

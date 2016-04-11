@@ -11,11 +11,17 @@
 -debug
 
 # Resources
--resource src/assets/Main.mtt@Main
--resource src/assets/MainNeko.mtt@MainNeko
--resource src/assets/build.mtt@build
--resource src/assets/buildNeko.mtt@buildNeko
--resource src/assets/Class.mtt@Class
+-resource src/assets/build/build.mtt@build
+-resource src/assets/build/buildNeko.mtt@buildNeko
+-resource src/assets/classes/Class.mtt@Class
+-resource src/assets/classes/Singleton.mtt@Singleton
+-resource src/assets/classes/Main.mtt@Main
+-resource src/assets/classes/MainNeko.mtt@MainNeko
+-resource src/assets/classes/MainPHP.mtt@MainPHP
+-resource src/assets/classes/MainJS.mtt@MainJS
+-resource src/assets/index.mtt@index
+-resource src/assets/package.mtt@package
+-resource src/assets/readme.mtt@readme
 
 #dead code elimination : remove unused code
 #"-dce no" : do not remove unused code

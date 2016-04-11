@@ -81,13 +81,14 @@ class Main
 		createBuild(sanitize(projectName),'BUILD.MD');
 		createGitignore(sanitize(projectName),'.gitignore');
 		
-		storeDefault();
+		writeConfig();
 		
 		if(isXperimental) createXperimental(projectXType);
 		
 		Sys.println('HxGenerate :: done');
 	}
 	
+	// ____________________________________ validate ____________________________________
 
 	public function validateTarget (target:String) : String 
 	{
@@ -124,15 +125,25 @@ class Main
 		return folder;
 	}
 	
+	/**
+	 * NPM project.json / folder-names
+	 *		- name must be lower-case
+	 * 		- no spaces in the name
+	 */
+	private function sanitize(str:String) : String
+	{
+		return str.replace(' ', '_').replace(':', '').replace('/','').toLowerCase();
+	}
 	
-	private function readConfig() : Void
+	// ____________________________________ config ____________________________________
+	
+	function readConfig() : Void
 	{
 		var folder = Sys.getCwd();
 		var json : HxGenConfig;
 		if (sys.FileSystem.exists(folder + 'hxgenerate.json')) {
 			var str = (sys.io.File.getContent(folder +  'hxgenerate.json'));
 			json = haxe.Json.parse(str);
-		
 			projectFolder 	= json.folder;
 			projectTarget 	= json.target;
 			projectName 	= json.name;
@@ -141,8 +152,25 @@ class Main
 		} else {
 			Sys.println('ERROR: can\'t find the config (${folder}hxgenerate.json)');
 		}
-		
 	}
+	
+	function writeConfig() : Void
+	{
+		var temp : HxGenConfig = 
+		{
+			folder : projectFolder,
+			target : projectTarget,
+			name : projectName,
+			author : projectAuthor,
+			license : projectLicense,
+			website : projectWebsite
+		}
+		
+		writeFile('../','hxgenerate.json',haxe.Json.stringify(temp));	
+		Sys.println('\tcreate config');
+	}
+	
+	// ____________________________________ create files/folders ____________________________________
 	
 	private function writeFile (path:String, name:String, content:String) : Void
 	{
@@ -161,47 +189,7 @@ class Main
 		Sys.println('\tcreate folder - $name');
 	}
 
-	private function showSettings() : Void
-	{
-		Sys.println('------------------
-
-projectFolder : ${projectFolder}${sanitize(projectName)}
-projectTarget : ${projectTarget} 
-projectName : ${projectName} 
-projectAuthor : ${projectAuthor} 
-projectLicense : ${projectLicense} 
-
-------------------');
-	}
-	
-	/**
-	 * NPM project.json / folder-names
-	 *		- name must be lower-case
-	 * 		- no spaces in the name
-	 */
-	private function sanitize(str:String) : String
-	{
-		return str.replace(' ', '_').replace(':', '').replace('/','').toLowerCase();
-	}
-	
-	
-	private function showHelp () : Void {
-		Sys.println('
-HX-GENERATE
-
-how to use: 
-neko hxgenerate -cd \'path/to/folder\' -name \'awsome project\' -license \'none\' -author \'that would be you\' -target \'neko\'
-
-	-help : show this help
-	-cd or -folder : path to project folder 
-	-name : project Name (name also used for the name of the generate folder)
-	-license : project license (MIT, etc)
-	-author : project author (you?)
-	-website : project website (from you?)
-	-target : project target (js, cpp, flash, neko, etc)		
-		
-');
-	}
+	// ____________________________________ create files ____________________________________
 	
 	private function createHx(path:String, name:String) : Void
 	{
@@ -226,52 +214,19 @@ neko hxgenerate -cd \'path/to/folder\' -name \'awsome project\' -license \'none\
 			projectLicense: projectLicense, 
 			projectWebsite : projectWebsite, 
 			projectName : projectName,
+			projectTarget : projectTarget,
 			sprojectName : sanitize(projectName),
 			classname : name.split('.')[0]
 		});
 		
 		writeFile(path, name, output);
-		Sys.println('\tcreate template create${name}Hx');
+		Sys.println('\tcreate template ${name}');
 	}
 	
 	private function createIndex(path:String, name:String) : Void
 	{
-		var str = '<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-	
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="favicon.ico">
-	
-	<title>${projectName}</title>
-	
-	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-	
-	<!-- custom css -->
-	<link rel="stylesheet" href="${sanitize(projectName)}.css" >
-
-</head>
-<body>
-	 <h1>Hello, world!</h1>
-
-    <!-- jQuery (necessary for Bootstrap\'s JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-	<!-- Latest compiled and minified JavaScript -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-	<!-- Code generated using Haxe -->
-	<script type="text/javascript" src="${sanitize(projectName)}.js"></script>
-</body>
-</html>';
-
-		writeFile(path, name, str);
-		Sys.println('\tcreate createIndex');
+		createWithTemplate(path, name, "index");
+		Sys.println('\tcreate $name');
 	}
 	
 	private function createHxml(path:String, name:String, target:String, ?content:String) : Void
@@ -367,46 +322,19 @@ switch (target) {
 	}
 	
 	
-	private function createPackage(path:String, name:String) : Void
+	function createPackage(path:String, name:String) : Void
 	{
-		var str = '{
-	"license": "${projectLicense}",
-	"name": "${sanitize(projectName)}",
-	"version": "1.0.0",
-	"description": "",
-	"private": true,
-	"author": "${projectAuthor}",
-	"scripts": {
-		"prewatch": "haxe build.hxml",
-		"watch": "onchange \'src/*.hx\' \'src/*/*.hx\' -v -- haxe build.hxml"
-	},
-	"devDependencies": {
-		"livereload": "0.4.1",
-		"onchange": "2.0.0"
-	}
-}';
-
-		writeFile(path, name, str);
+		createWithTemplate(path, name, "package");
 		Sys.println('\tcreate createPackage');
 	}
 	
-	private function createReadme(path:String, name:String) : Void
+	function createReadme(path:String, name:String) : Void
 	{
-		var str = '#${projectName}
-
-- project target: ${projectTarget}
-- project folder: ${projectFolder}${sanitize(projectName)}
-- project license: ${projectLicense}
-- project author: ${projectAuthor}
-- project website: ${projectWebsite}
-	
-';
-
-		writeFile(path, name, str);
+		createWithTemplate(path, name, "readme");
 		Sys.println('\tcreate createReadme');
 	}
 
-	private function createBuild(path:String, name:String) : Void
+	function createBuild(path:String, name:String) : Void
 	{
 		var str = '#Build ${projectName}
 
@@ -462,40 +390,26 @@ npm run watch
 		Sys.println('\tcreate createBuild');
 	}
 	
-	public function createGitignore (path:String, name:String) : Void {
-		var str = 'BUILD.MD
-.DS_Store
-';
-
+	// ignore some files I generate 
+	function createGitignore (path:String, name:String) : Void 
+	{
+		var str = 'BUILD.MD\n.DS_Store\n';
 		writeFile(path, name, str);
 		Sys.println('\tcreate createGitignore');
 	}
 	
-	private function storeDefault() : Void
-	{
-		var temp : HxGenConfig = 
-		{
-			folder : projectFolder,
-			target : projectTarget,
-			name : projectName,
-			author : projectAuthor,
-			license : projectLicense,
-			website : projectWebsite
-		}
-		
-		writeFile('../','hxgenerate.json',haxe.Json.stringify(temp));	
-		Sys.println('\tcreate config');
-	}
-	
-	
 	function createXperimental(type:String) 
 	{
-		switch (type)
+		// [mck] should be a combination of project vs -x name
+		switch (type.toLowerCase())
 		{
 			case 'test' : createWithTemplate(sanitize(projectName)+'/src','Test.hx', 'Class');
+			case 'flux' : 
+				createFolder(sanitize(projectName)+'/src/store');
+				createWithTemplate(sanitize(projectName)+'/src/store','Store.hx', 'Singleton');
 		}
 	
-		switch (projectTarget) 
+		switch (projectTarget.toLowerCase()) 
 		{
 			case 'neko': 
 				createWithTemplate(sanitize(projectName)+'/src','Main.hx', 'MainNeko');
@@ -504,9 +418,42 @@ npm run watch
 		}
 	}
 	
+	// ____________________________________ show app stuff ____________________________________
+	
+	function showSettings() : Void
+	{
+		Sys.println('------------------
+
+projectFolder : ${projectFolder}${sanitize(projectName)}
+projectTarget : ${projectTarget} 
+projectName : ${projectName} 
+projectAuthor : ${projectAuthor} 
+projectLicense : ${projectLicense} 
+
+------------------');
+	}
+	
+	
+	function showHelp () : Void {
+		Sys.println('
+HX-GENERATE
+
+how to use: 
+neko hxgenerate -cd \'path/to/folder\' -name \'awsome project\' -license \'none\' -author \'that would be you\' -target \'neko\'
+
+	-help : show this help
+	-cd or -folder : path to project folder 
+	-name : project Name (name also used for the name of the generate folder)
+	-license : project license (MIT, etc)
+	-author : project author (you?)
+	-website : project website (from you?)
+	-target : project target (js, cpp, flash, neko, etc)		
+		
+');
+	}
 
 	
-	
+	// ____________________________________ jump start everything ____________________________________
 	
     static public function main()
     {

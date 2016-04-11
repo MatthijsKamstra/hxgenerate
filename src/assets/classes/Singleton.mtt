@@ -1,0 +1,20 @@
+package;
+
+/**
+ * // this will be the only way to access the instance
+ * @example		::classname::Singleton.instance;
+ */
+class ::classname::Singleton
+{
+    public static var instance(get, null):T;
+    static function get_instance() {
+      if (instance == null) {
+        instance = new ::classname::Singleton();
+      }
+      return instance;
+    }
+
+    private function new () {}  // private constructor
+	
+	
+}

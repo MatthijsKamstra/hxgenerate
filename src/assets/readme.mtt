@@ -1,0 +1,8 @@
+# ::projectName::
+
+- project target 	: ::projectTarget::
+- project folder 	: ::projectFolder::::sprojectName::
+- project license 	: ::projectLicense::
+- project author 	: ::projectAuthor::
+- project website 	: ::projectWebsite::
+
