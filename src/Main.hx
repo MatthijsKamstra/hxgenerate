@@ -79,6 +79,7 @@ class Main
 		createPackage(sanitize(projectName),'package.json');
 		createReadme(sanitize(projectName),'README.MD');
 		createBuild(sanitize(projectName),'BUILD.MD');
+		createTodo(sanitize(projectName),'TODO.MD');
 		createGitignore(sanitize(projectName),'.gitignore');
 		
 		writeConfig();
@@ -332,6 +333,13 @@ switch (target) {
 	{
 		createWithTemplate(path, name, "readme");
 		Sys.println('\tcreate createReadme');
+	}
+	
+	function createTodo(path:String, name:String) : Void
+	{
+		var str = '# TODO\n\n> a journey of a thousand miles begins with a single step\n\n';
+		writeFile(path, name, str);
+		Sys.println('\tcreate TODO');
 	}
 
 	function createBuild(path:String, name:String) : Void
