@@ -22,6 +22,7 @@
 -resource src/assets/index.mtt@index
 -resource src/assets/package.mtt@package
 -resource src/assets/readme.mtt@readme
+-resource src/assets/icon.png@icon
 
 #dead code elimination : remove unused code
 #"-dce no" : do not remove unused code

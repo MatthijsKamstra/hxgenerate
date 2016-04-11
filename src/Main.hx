@@ -81,6 +81,7 @@ class Main
 		createBuild(sanitize(projectName),'BUILD.MD');
 		createTodo(sanitize(projectName),'TODO.MD');
 		createGitignore(sanitize(projectName),'.gitignore');
+		createIcon(sanitize(projectName),'icon.png');
 		
 		writeConfig();
 		
@@ -342,6 +343,15 @@ switch (target) {
 		Sys.println('\tcreate TODO');
 	}
 
+	function createIcon(path:String, name:String) : Void
+	{
+		var byt = haxe.Resource.getBytes('icon');
+		var fo:FileOutput = sys.io.File.write(projectFolder + path + '/' + name, true);
+		fo.write(byt);
+		fo.close();
+		Sys.println('\tcreate icon');
+	}
+	
 	function createBuild(path:String, name:String) : Void
 	{
 		var str = '#Build ${projectName}
