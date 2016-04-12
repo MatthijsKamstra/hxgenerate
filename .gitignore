@@ -1,14 +1,6 @@
-bin/bazooo
-bin/project_name_in_terminal
 hxgenerate.json
 _design
-bin/cazooo
 test.hxml
-bin/example_java
-bin/example_js
-bin/example_neko
-bin/example_php
+bin/test/*
 vscode-project.hxml
-bin/example_neko_x
-bin/example_neko_x_test
-bin/example_js_x_flux
+BUILD.MD

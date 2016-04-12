@@ -85,6 +85,9 @@ class Main
 		
 		writeConfig();
 		
+		// createZip();
+		// createImage();
+		
 		if(isXperimental) createXperimental(projectXType);
 		
 		Sys.println('HxGenerate :: done');
@@ -345,12 +348,48 @@ switch (target) {
 
 	function createIcon(path:String, name:String) : Void
 	{
-		var byt = haxe.Resource.getBytes('icon');
+		var bytes = haxe.Resource.getBytes('icon');
 		var fo:FileOutput = sys.io.File.write(projectFolder + path + '/' + name, true);
-		fo.write(byt);
+		fo.write(bytes);
 		fo.close();
 		Sys.println('\tcreate icon');
 	}
+	
+	function createZip()
+	{
+		var bytes = haxe.Resource.getBytes('fluxzip');
+		var bytesInput = new haxe.io.BytesInput(bytes);
+		var entries = haxe.zip.Reader.readZip( bytesInput );
+		
+		// [mck] flux specific
+		
+		for (entry in entries){
+			if(entry.fileName.indexOf('__MACOSX') != -1) continue;
+			trace ("read entry " + entry.fileName + " : " + entry.fileSize);
+		}		
+		
+	}
+	
+	function createImage()
+	{
+		var bytes = haxe.Resource.getBytes('eboy');
+		var pngInput = new haxe.io.BytesInput(bytes);
+		var pngReader = new format.png.Reader(pngInput);
+		var pngData:format.png.Data = pngReader.read();
+		
+		
+		var data = format.png.Tools.buildRGB (400,400,bytes);
+        var out = sys.io.File.write(projectFolder + sanitize(projectName) + '/' + '_foobar.png',true);
+        new format.png.Writer(out).write(data);    
+		
+		// pngByt = Tools.extract32(pngData);
+		// var bmp:BitmapData = new BitmapData(33, 40);
+		// var byteArray:flash.utils.ByteArray = pngByt.getData();
+		// byteArray.position = 0;
+		// bmp.setPixels(new Rectangle(0, 0, 33, 40), byteArray);
+		// add(new FlxSprite(0, 0, bmp));
+	}
+	
 	
 	function createBuild(path:String, name:String) : Void
 	{
@@ -424,7 +463,10 @@ npm run watch
 			case 'test' : createWithTemplate(sanitize(projectName)+'/src','Test.hx', 'Class');
 			case 'flux' : 
 				createFolder(sanitize(projectName)+'/src/store');
+				createZip();
+				// createImage(); // [mck] needs more love
 				createWithTemplate(sanitize(projectName)+'/src/store','Store.hx', 'Singleton');
+				
 		}
 	
 		switch (projectTarget.toLowerCase()) 

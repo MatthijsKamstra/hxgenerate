@@ -1,3 +1,6 @@
+# libs
+-lib format
+
 #integrate files to classpath
 -cp src
 
@@ -23,6 +26,8 @@
 -resource src/assets/package.mtt@package
 -resource src/assets/readme.mtt@readme
 -resource src/assets/icon.png@icon
+-resource src/assets/eboy.png@eboy
+-resource src/assets/packs/flux.zip@fluxzip
 
 #dead code elimination : remove unused code
 #"-dce no" : do not remove unused code

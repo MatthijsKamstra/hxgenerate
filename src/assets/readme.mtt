@@ -1,5 +1,7 @@
 # ::projectName::
 
+![](icon.png)
+
 - project target 	: ::projectTarget::
 - project folder 	: ::projectFolder::::sprojectName::
 - project license 	: ::projectLicense::
