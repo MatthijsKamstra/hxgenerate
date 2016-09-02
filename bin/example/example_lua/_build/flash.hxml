@@ -1,0 +1,34 @@
+# Libraries you like to use (http://lib.haxe.org/)
+# -lib markdown
+# -lib svglib
+# -lib jQueryExtern
+
+# Integrate files to classpath
+-cp src
+
+# This class wil be used as entry point for your app.
+-main Main
+
+# flash target
+-swf bin/example_lua.swf
+
+# Add debug information
+-debug
+
+# Resources like templates
+# -resource src/assets/LICENSE@licence
+
+# Dead code elimination : remove unused code
+# "-dce no" : do not remove unused code
+# "-dce std" : remove unused code in the std lib (default)
+# "-dce full" : remove all unused code
+-dce full
+
+
+
+# Additional commandline actions can be done here
+# -cmd cp -R src/assets/img bin/www
+
+# Add extra targets
+# --next
+

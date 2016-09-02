@@ -1,0 +1,37 @@
+# Libraries you like to use (http://lib.haxe.org/)
+# -lib markdown
+# -lib svglib
+# -lib jQueryExtern
+
+# Integrate files to classpath
+-cp src
+
+# This class wil be used as entry point for your app.
+-main Main
+
+# java target
+-java bin/java
+
+# Add debug information
+-debug
+
+# Resources like templates
+# -resource src/assets/LICENSE@licence
+
+# Dead code elimination : remove unused code
+# "-dce no" : do not remove unused code
+# "-dce std" : remove unused code in the std lib (default)
+# "-dce full" : remove all unused code
+-dce full
+
+# run java application
+-cmd cd bin/java
+-cmd java -jar Main-Debug.jar
+
+
+# Additional commandline actions can be done here
+# -cmd cp -R src/assets/img bin/www
+
+# Add extra targets
+# --next
+

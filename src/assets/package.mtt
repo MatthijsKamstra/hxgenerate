@@ -7,7 +7,7 @@
 	"author": "::projectAuthor::",
 	"scripts": {
 		"prewatch": "haxe build.hxml",
-		"watch": "onchange 'src/*.hx' 'src/*/*.hx' -v -- haxe build.hxml"
+		"watch": "onchange 'src/*.hx' 'src/*/*.hx' 'src/*/*/*.hx' 'src/*/*/*/*.hx' -v -- haxe build.hxml"
 	},
 	"devDependencies": {
 		"livereload": "0.4.1",

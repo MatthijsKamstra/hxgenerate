@@ -1,0 +1,43 @@
+# Libraries you like to use (http://lib.haxe.org/)
+# -lib markdown
+# -lib svglib
+# -lib jQueryExtern
+
+# Integrate files to classpath
+-cp src
+
+# This class wil be used as entry point for your app.
+-main Main
+
+# js target
+-js bin/example_python.js
+
+# You can use -D source-map-content (requires Haxe 3.1+) to have the .hx
+# files directly embedded into the map file, this way you only have to
+# upload it, and it will be always in sync with the compiled .js even if
+# you modify your .hx files.
+-D source-map-content
+
+
+
+# Add debug information
+-debug
+
+# Resources like templates
+# -resource src/assets/LICENSE@licence
+
+# Dead code elimination : remove unused code
+# "-dce no" : do not remove unused code
+# "-dce std" : remove unused code in the std lib (default)
+# "-dce full" : remove all unused code
+-dce full
+
+# run js application# -cmd open -a Google\ Chrome http://localhost:2000/
+# -cmd nekotools server
+
+# Additional commandline actions can be done here
+# -cmd cp -R src/assets/img bin/www
+
+# Add extra targets
+# --next
+

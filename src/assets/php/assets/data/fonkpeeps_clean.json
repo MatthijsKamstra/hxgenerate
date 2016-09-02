@@ -1,0 +1,413 @@
+{
+   "peeps" : [ 
+		{
+			"url": "assets/img/MartijnWip.jpg",
+			"name" : "Martijn",
+			"surname" : "Wip",
+			"color": "yellow",
+			"desc":"",
+			"id":"martijn",
+			"isavailable" : false,
+			"free": "",
+			"state":"full"
+		},
+		{
+			"url": "assets/img/StephanieBuijs.jpg",
+			"name" : "Stephanie",
+			"surname" : "Buijs",
+			"color": "orange",
+			"desc":"",
+			"id":"stephanie",
+			"isavailable" : true,
+			"free": "",
+			"state":"full"
+		},{
+			"url": "assets/img/monica.jpg",
+			"name" : "Monica",
+			"surname" : "",
+			"color": "orange",
+			"desc":"",
+			"id":"monica",
+			"isavailable" : false,
+			"free": "",
+			"state":"stage"
+		},
+		{
+			"url": "assets/img/ChrisRoosendaal.jpg",
+			"name" : "Chris",
+			"surname" : "Roosendaal",
+			"color": "orange",
+			"desc":"",
+			"id":"chris",
+			"isavailable" : false,
+			"free": "",
+			"state":"full"
+		},
+		{
+			"url": "assets/img/bengroot.jpg",
+			"name" : "Ben",
+			"surname" : "Groot",
+			"color": "orange",
+			"desc":"",
+			"id":"ben",
+			"isavailable" : true,
+			"free": "",
+			"state":"full"
+		},
+		{
+			"url": "assets/img/woutersteidl.jpg",
+			"name" : "Wouter",
+			"surname" : "Steidl",
+			"color": "black",
+			"desc":"",
+			"id":"wouter",
+			"isavailable" : true,
+			"free": "",
+			"state":"full"
+		},
+		{
+			"url": "assets/img/bartschoon.jpg",
+			"name" : "Bart",
+			"surname" : "Schoon",
+			"color": "green",
+			"desc":"",
+			"id":"bart",
+			"isavailable" : true,
+			"free": "",
+			"state":"full"
+		},
+		
+		{
+			"url": "assets/img/matthijs.jpg",
+			"name" : "Matthijs",
+			"surname" : "Kamstra",
+			"color": "pink",
+			"desc":"",
+			"id":"matthijs",
+			"isavailable" : true,
+			"free": "vrijdag",
+			"state":"full"
+		},
+
+		{
+			"url": "assets/img/JasperBunschoten.jpg",
+			"name" : "Jasper",
+			"surname" : "Bunschoten",
+			"color": "blue",
+			"desc":"",
+			"id":"jasper",
+			"isavailable" : true,
+			"free": "",
+			"state":"full"
+		},
+		{
+			"url": "assets/img/DeborahSchrijver.jpg",
+			"name" : "Deborah",
+			"surname" : "Schrijver",
+			"color": "yellow",
+			"desc":"",
+			"id":"deborah",
+			"isavailable" : false,
+			"free": "",
+			"state":"stage"
+		},
+		{
+			"url": "assets/img/OskarSmith.jpg",
+			"name" : "Oskar",
+			"surname" : "Smith",
+			"color": "blue",
+			"desc":"",
+			"id":"oskar",
+			"isavailable" : true,
+			"free": "",
+			"state":"full"
+		},
+		{
+			"url": "assets/img/Philip_Provoost.jpg",
+			"name" : "Philip",
+			"surname" : "Provoost",
+			"color": "red",
+			"desc":"",
+			"id":"philip",
+			"isavailable" : true,
+			"free": "friday",
+			"state":"full"
+		},
+		{
+			"url": "assets/img/geert.jpg",
+			"name" : "Geert",
+			"surname" : "",
+			"color": "red",
+			"desc":"",
+			"id":"geert",
+			"isavailable" : true,
+			"free": "",
+			"state":"stage"
+		}, 
+		{
+			"url": "assets/img/BarbaraBijvank.jpg",
+			"name" : "Barbara",
+			"surname" : "Bijvank",
+			"color": "pink",
+			"desc":"",
+			"id":"barbara",
+			"isavailable" : false,
+			"free": "maandag, dinsdag, woensdag, vrijdag",
+			"state":""
+
+		},
+		{
+			"url": "assets/img/NielsSquare500.jpg",
+			"name" : "Niels",
+			"surname" : "Keizer",
+			"color": "pink",
+			"desc":"",
+			"id":"niels",
+			"isavailable" : false,
+			"free": "",
+			"state":"full"
+		},
+		{
+			"url": "assets/img/dirk-schluter.jpg",
+			"name" : "Dirk",
+			"surname" : "Schluter",
+			"color": "yellow",
+			"desc":"",
+			"id":"dirk",
+			"isavailable" : false,
+			"free": "",
+			"state":"full"
+		},
+		 {
+			"url": "assets/img/erikjanbijvank.jpg",
+			"name" : "Erik Jan",
+			"surname" : "Bijvank",
+			"color": "green",
+			"desc":"",
+			"id":"erikjan",
+			"isavailable" : false,
+			"free": "",
+			"state":"full"
+		},
+		{
+			"url": "assets/img/astrid.jpg",
+			"name" : "Astrid",
+			"surname" : "Poot",
+			"color": "yellow",
+			"desc":"",
+			"id":"astrid",
+			"isavailable" : true,
+			"free": "",
+			"state":"full"
+		},
+		{
+			"url": "assets/img/kai_nobbe.jpg",
+			"name" : "Kai",
+			"surname" : "Nobbe",
+			"color": "green",
+			"desc":"",
+			"id":"kai",
+			"isavailable" : true,
+			"free": "",
+			"state":"full"
+		},
+		{
+			"url": "assets/img/marijn_schilling.jpg",
+			"name" : "Marijn",
+			"surname" : "Schilling",
+			"color": "blue",
+			"desc":"",
+			"id":"marijn",
+			"isavailable" : true,
+			"free": "maandag",
+			"state":"full"
+		},
+		{
+			"url": "assets/img/joia_buning.jpg",
+			"name" : "Joia",
+			"surname" : "Buning",
+			"color": "pink",
+			"desc":"",
+			"id":"joia",
+			"isavailable" : true,
+			"free": "dinsdag-vrijdag",
+			"state":"part"
+		},
+		{
+			"url": "assets/img/jurre_kuilder.png",
+			"name" : "Jurre",
+			"surname" : "Kuilder",
+			"color": "blue",
+			"desc":"",
+			"id":"jurre",
+			"isavailable" : false,
+			"free": "",
+			"state":"stage"
+		},
+		{
+			"url": "assets/img/roelwijker.jpg",
+			"name" : "Roel",
+			"surname" : "Wijker",
+			"color": "green",
+			"desc":"",
+			"id":"roel",
+			"isavailable" : true,
+			"free": "",
+			"state":"stage"
+		},
+		{
+			"url": "assets/img/leonie_jonk.jpg",
+			"name" : "Leonie",
+			"surname" : "Jonk",
+			"color": "yellow",
+			"desc":"",
+			"id":"leonie",
+			"isavailable" : true,
+			"free": "",
+			"state":"full"
+		},
+		{
+			"url": "assets/img/marc_apon.jpg",
+			"name" : "Marc",
+			"surname" : "Apon",
+			"color": "green",
+			"desc":"",
+			"id":"marc",
+			"isavailable" : true,
+			"free": "",
+			"state":"full"
+		},
+		{
+			"url": "assets/img/anna_herder.jpg",
+			"name" : "Anna",
+			"surname" : "Herder",
+			"color": "yellow",
+			"desc":"",
+			"id":"anna",
+			"isavailable" : false,
+			"free": "dinsdag,woensdag",
+			"state":"part"
+		},
+		{
+			"url": "assets/img/orkun_ayhan.png",
+			"name" : "Orkun",
+			"surname" : "Ayhan",
+			"color": "green",
+			"desc":"",
+			"id":"orkun",
+			"isavailable" : false,
+			"free": "",
+			"state":"stage"
+		},
+		{
+			"url": "assets/img/tom_snepvangers.jpg",
+			"name" : "Tom",
+			"surname" : "Snepvangers",
+			"color": "yellow",
+			"desc":"",
+			"id":"tom",
+			"isavailable" : true,
+			"free": "",
+			"state":"stage"
+		},
+		{
+			"url": "assets/img/dimitri_de_wit.jpg",
+			"name" : "Dimitri",
+			"surname" : "De Wit",
+			"color": "green",
+			"desc":"",
+			"id":"dimitri",
+			"isavailable" : true,
+			"free": "vrijdag",
+			"state":"stage"
+		},
+		{
+			"url": "assets/img/karlijn_moll.jpg",
+			"name" : "Karlijn",
+			"surname" : "Moll",
+			"color": "pink",
+			"desc":"",
+			"id":"karlijn",
+			"isavailable" : true,
+			"free": "",
+			"state":"full"
+		},
+		{
+			"url": "assets/img/vivien_vonk.jpg",
+			"name" : "Vivien",
+			"surname" : "Vonk",
+			"color": "pink",
+			"desc":"",
+			"id":"vivien",
+			"isavailable" : true,
+			"free": "",
+			"state":"stage"
+		},
+		{
+			"url": "assets/img/jordy_dings.jpg",
+			"name" : "Jordy",
+			"surname" : "Dings",
+			"color": "pink",
+			"desc":"",
+			"id":"jordy",
+			"isavailable" : true,
+			"free": "",
+			"state":"stage"
+		},
+		{
+			"url": "assets/img/Thomas_Eekhof.jpg",
+			"name" : "Thomas",
+			"surname" : "Eekhof",
+			"color": "pink",
+			"desc":"",
+			"id":"thomas",
+			"isavailable" : false,
+			"free": "",
+			"state":"stage"
+		},
+		{
+			"url": "assets/img/Frederique_Matti.jpg",
+			"name" : "Frederique",
+			"surname" : "Matti",
+			"color": "pink",
+			"desc":"",
+			"id":"frederique",
+			"isavailable" : true,
+			"free": "",
+			"state":"stage"
+		},
+		{
+			"url": "assets/img/Rob_Boerman.jpg",
+			"name" : "Rob",
+			"surname" : "Boerman",
+			"color": "pink",
+			"desc":"",
+			"id":"rob",
+			"isavailable" : true,
+			"free": "",
+			"state":"stage"
+		},
+		{
+			"url": "assets/img/Sean_Hangel.jpg",
+			"name" : "Sean",
+			"surname" : "Hangel",
+			"color": "pink",
+			"desc":"",
+			"id":"sean",
+			"isavailable" : true,
+			"free": "",
+			"state":"stage"
+		},
+		{
+			"url": "assets/img/johnvandenberg.jpg",
+			"name" : "John",
+			"surname" : "van den Berg",
+			"color": "pink",
+			"desc":"",
+			"id":"john",
+			"isavailable" : true,
+			"free": "",
+			"state":"stage"
+		}
+	]
+}

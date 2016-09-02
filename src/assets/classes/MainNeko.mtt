@@ -12,6 +12,9 @@ class Main {
 	 */
 	private var VERSION : String = '0.0.1';
 	
+	
+	private var projectFolder = Sys.getCwd ();
+
 	public function new (?args : Array<String>) {
 		trace( "Hello '::projectName::'" );
 
@@ -25,9 +28,23 @@ class Main {
 				default : trace ("case '"+temp+"': trace ('"+temp+"');");
 			}
 		}
+
+		build();
 	}
 
-	private function showHelp () : Void {
+	function build(){
+		// var str = haxe.Resource.getString('test');
+	}
+
+
+	function writeFile (path:String, name:String, content:String) : Void
+	{
+		sys.io.File.saveContent(projectFolder + path + '/' + name, content);
+	}
+
+
+
+	function showHelp () : Void {
 		Sys.println('
 ::sprojectName::
 
