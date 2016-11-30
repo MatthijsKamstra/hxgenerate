@@ -1,0 +1,9 @@
+before_script:
+  - docker info
+
+test:
+  script:
+    - docker build -t jack-hauwer:v1 .
+    - docker run jack-hauwer:v1 ./test.sh
+  tags:
+    - docker

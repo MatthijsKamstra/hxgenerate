@@ -5,6 +5,9 @@ import sys.io.File;
 import sys.io.FileOutput;
 import sys.FileSystem;
 
+import gen.main.*;
+import gen.build.*;
+
 using StringTools;
 
 /**
@@ -15,12 +18,20 @@ using StringTools;
 class Main
 {
 	/**
+	* 0.1.2 docker file added, in combination with gitlab, -x working for docker/gitlab
+	* 0.1.1 yml file for node.js projects (gitlab) / add .version file
+	* 0.1.0 bin favicon / hxml generation with debug / update haxe info and build_all / gitignore node_modules
+	* 0.0.9 build_debug build_release
+	* 0.0.8 removed _build_vscode again (hxml our now without -cmd etc stuff), Main-Node/PHP added
+	* 0.0.7 create custom Main.hx files based upon target
+	* 0.0.6 added openfl
+	* 0.0.5 Virtual studio code stuff added
 	* 0.0.4 neko target
 	* 0.0.3 -x added, using haxe.template
 	* 0.0.2 update all target, add more output nicities
 	* 0.0.1 initial
 	*/
-	private var VERSION : String = '0.0.3';
+	private var VERSION : String = '0.1.2';
 
 	private var projectFolder 	: String = '';
 	private var projectTarget 	: String = 'js';
@@ -28,9 +39,11 @@ class Main
 	private var projectAuthor 	: String = 'Matthijs Kamstra aka [mck]';
 	private var projectLicense 	: String = 'MIT';
 	private var projectWebsite 	: String = '';
-	private var projectXType 	: String = '';
+	private var projectXType 	: Array<String> = [];
 
-	private var targetArr : Array<String> = ["cpp", "js", "flash", "neko", "php", "cs", "java", "python", 'lua'];
+	// private var targetArr : Array<String> = ["cpp", "js", "javascript", "flash", "neko", "php", "cs", "java", "python", 'lua', 'node', 'nodejs', 'node.js', 'openfl'];
+	private var targetArr : Array<String> = ["cpp", "js", "flash", "neko", "php", "cs", "java", "python", 'lua', 'node', 'openfl'];
+	private var xtargetArr : Array<String> = ['test','flux','openfl','heroku','gitlab','docker'];
 
 	var isXperimental: Bool = false;
 
@@ -52,7 +65,7 @@ class Main
 				case '-target','-t': 		projectTarget = validateTarget(args[i+1]);
 				case '-website','-w': 		projectWebsite = args[i+1];
 				case '-help','-h': 			showHelp();
-				case '-x': 					projectXType = validateXType(args[i+1]); isXperimental = true;
+				case '-x': 					projectXType.push(validateXType(args[i+1])); isXperimental = true;
 
 				// default : trace ("case '"+temp+"': trace ('"+temp+"');");
 			}
@@ -72,18 +85,25 @@ class Main
 		createFolder(sanitize(projectName)+'/bin');
 		createFolder(sanitize(projectName)+'/src');
 		createFolder(sanitize(projectName)+'/_build');
+		createFolder(sanitize(projectName)+'/.vscode');
 
 		createHx(sanitize(projectName)+'/src','Main.hx');
 		createTargetSpecific(projectTarget);
 		createBuildTargets(sanitize(projectName)+'/_build');
+		createHxmlAll(sanitize(projectName),'build_all.hxml');
 		createHxml(sanitize(projectName),'build.hxml', projectTarget);
-		createPackage(sanitize(projectName),'package.json');
+		createHxml(sanitize(projectName),'build_release.hxml', projectTarget, false);
+		createHxml(sanitize(projectName),'build_debug.hxml', projectTarget, true);
+		createPackage(sanitize(projectName),'package.json', projectTarget);
 		createReadme(sanitize(projectName),'README.MD');
+		createReadme(sanitize(projectName),'README_HAXE.MD', true);
 		createBuild(sanitize(projectName),'BUILD.MD');
 		createTodo(sanitize(projectName),'TODO.MD');
 		createGitignore(sanitize(projectName),'.gitignore');
 		createIcon(sanitize(projectName),'icon.png');
-
+		createFavicon(sanitize(projectName)+'/bin');
+		createVSCode(sanitize(projectName)+'/.vscode');
+		createVersion(sanitize(projectName));
 
 		writeConfig();
 
@@ -100,11 +120,12 @@ class Main
 	public function validateTarget (target:String) : String
 	{
 		var isValidTarget = false;
+		// [mck] maybe some extra checks for 'node, nodejs, node.js', 'js, javascript, JavaScript'
 		for ( i in 0 ... targetArr.length ) {
-			if(target == targetArr[i]) isValidTarget = true;
+			if(target.toLowerCase() == targetArr[i]) isValidTarget = true;
 		}
 		if(!isValidTarget) Sys.println('ERROR :: I don\'t know this target (${target}), must be an experimental');
-		return target;
+		return target.toLowerCase();
 	}
 
 	function validateXType (type:String) : String
@@ -139,7 +160,7 @@ class Main
 	 */
 	private function sanitize(str:String) : String
 	{
-		return str.replace(' ', '_').replace(':', '').replace('/','').replace('+','p').toLowerCase();
+		return str.replace('.', '_').replace(' ', '_').replace(':', '').replace('/','').replace('+','p').toLowerCase();
 	}
 
 	// ____________________________________ config ____________________________________
@@ -211,27 +232,72 @@ class Main
 
 	function createTargetSpecific (target:String){
 		switch (target) {
-			case 'js':
-				createIndex(sanitize(projectName)+'/bin','index.html');
 		  	case 'neko' :
 			  	createWithTemplate(sanitize(projectName),'test.hxml', 'buildNeko');
 			case 'python':
 				// do something clever for python
+			case 'js', 'node', 'nodejs', 'node.js':
+				// do something clever for nodejs AND Js
+				createFolder(sanitize(projectName)+'/bin/public');
+				createFolder(sanitize(projectName)+'/bin/public/css');
+				createFolder(sanitize(projectName)+'/bin/public/js');
+				createFolder(sanitize(projectName)+'/bin/public/img');
+				createFolder(sanitize(projectName)+'/bin/_data');
+				createFolder(sanitize(projectName)+'/src/api');
+				createFolder(sanitize(projectName)+'/src/model');
+				createFolder(sanitize(projectName)+'/src/model/vo');
+				createFolder(sanitize(projectName)+'/src/model/constants');
+				createWithTemplate(sanitize(projectName)+'/src/model/constants','App.hx', 'App');
+				createIndex(sanitize(projectName)+'/bin','index.html');
 			case 'php':
 				createFolder(sanitize(projectName)+'/bin/www');
 				createFolder(sanitize(projectName)+'/src/assets');
-				createWithTemplate(sanitize(projectName)+'/src','Main.hx', 'MainPHP');
-
+				createFolder(sanitize(projectName)+'/src/assets/font');
+				createFolder(sanitize(projectName)+'/src/assets/img');
+				createFolder(sanitize(projectName)+'/src/assets/css');
+				createFolder(sanitize(projectName)+'/src/assets/mtt');
+				createFolder(sanitize(projectName)+'/src/model');
+				createFolder(sanitize(projectName)+'/src/model/constants');
+				createFolder(sanitize(projectName)+'/src/model/vo');
+				createFolder(sanitize(projectName)+'/src/view');
+				createFolder(sanitize(projectName)+'/src/controller');
+				// createWithTemplate(sanitize(projectName)+'/src','Main.hx', 'MainPHP');
+				writeFile(sanitize(projectName)+'/src/assets','.htaccess', 'RewriteEngine On\n# RewriteBase /xbeacon/\n\n# Checks to see if the user is attempting to access a valid file,\n# such as an image or css document, if this isn\'t true it sends the\n# request to index.php\n#\nRewriteCond %{REQUEST_FILENAME} !-f\nRewriteCond %{REQUEST_FILENAME} !-d\n\n# Default is redirecting to index.php.\n# If you\'re using Neko, you must change this to index.n.\n#\nRewriteRule ^(.*)$ index.php/$1 [L]');
+				writeFile(sanitize(projectName)+'/src','Route.hx', '// clever stuff');
+			case 'openfl':
+				createFolder(sanitize(projectName)+'/Assets');
+				createWithTemplate(sanitize(projectName),'project.xml', 'buildOpenfl');
+				createWithTemplate(sanitize(projectName)+'/src','Main.hx', 'MainOpenfl');
 
 			// default : trace ("case '"+target+"': trace ('"+target+"');");
 		}
 	}
 
+	/**
+	 * create a Main.hx file specific for projectTarget
+	 *
+	 * @param		path  			where Should the file be saved (example : sanitize(projectName)+'/src')
+	 * @param		name    		name of the file (example: 'Main.hx')
+	 */
 	private function createHx(path:String, name:String) : Void
 	{
-		createWithTemplate(path, name, "Main");
+		switch (projectTarget) {
+			case 'js':
+				var template = new MainJS().template();
+				createWithGenTemplate(path, name, template);
+			case 'node', 'node.js', 'nodejs':
+				var template = new MainNode().template();
+				createWithGenTemplate(path, name, template);
+			case 'php':
+				var template = new MainPHP().template();
+				createWithGenTemplate(path, name, template);
+			default:
+				var template = new MainBase().template();
+				createWithGenTemplate(path, name, template);
+		}
 		Sys.println('\tcreate ${name}');
 	}
+
 
 	/**
 	 * createWithTemplate
@@ -243,7 +309,20 @@ class Main
 	function createWithTemplate(path:String, name:String, templateName:String) : Void
 	{
 		var str = haxe.Resource.getString('$templateName');
-        var t = new haxe.Template(str);
+        createWithGenTemplate(path, name, str);
+		// Sys.println('\tcreate template ${name}');
+	}
+
+	/**
+	 * createWithGenTemplate
+	 *
+	 * @param		path  			where Should the file be saved (example : sanitize(projectName)+'/src')
+	 * @param		name    		name of the file (example: 'Main.hx')
+	 * @param		template		template string
+	 */
+	function createWithGenTemplate(path:String, name:String, template:String) : Void
+	{
+        var t = new haxe.Template(template);
         var output = t.execute({
 			projectAuthor : projectAuthor,
 			projectFolder : projectFolder,
@@ -256,7 +335,7 @@ class Main
 		});
 
 		writeFile(path, name, output);
-		Sys.println('\tcreate template ${name}');
+		Sys.println('\tcreate template "${name}"');
 	}
 
 	private function createIndex(path:String, name:String) : Void
@@ -265,105 +344,51 @@ class Main
 		Sys.println('\tcreate $name');
 	}
 
-	private function createHxml(path:String, name:String, target:String, ?content:String) : Void
-	{
-		var str = '# Libraries you like to use (http://lib.haxe.org/)
-# -lib markdown
-# -lib svglib
-# -lib jQueryExtern
-
-# Integrate files to classpath
--cp src
-
-# This class wil be used as entry point for your app.
--main Main
-
-# ${target} target
-';
-
-// [mck] every target should have it's own export setting
-switch (target) {
-	case 'php': str += '-${target} bin/www';
-	case 'cpp': str += '-${target} bin';
-	case 'cs': str += '-${target} bin/${sanitize(projectName)}.exe';
-	case 'java': str += '-${target} bin/java';// ${sanitize(projectName)}.jar';
-	case 'flash': str += '-swf bin/${sanitize(projectName)}.swf';
-	case 'neko': str += '-${target} bin/${sanitize(projectName)}.n';
-	case 'python': str += '-${target} bin/${sanitize(projectName)}.py';
-	case 'js':
-		str += '-${target} bin/${sanitize(projectName)}.js';
-		str += '
-
-# You can use -D source-map-content (requires Haxe 3.1+) to have the .hx
-# files directly embedded into the map file, this way you only have to
-# upload it, and it will be always in sync with the compiled .js even if
-# you modify your .hx files.
--D source-map-content
-
-';
-	default : str += '-${target} bin/${sanitize(projectName)}.${target}';
-}
-
-
-str += '
-
-# Add debug information
--debug
-
-# Resources like templates
-# -resource src/assets/LICENSE@licence
-
-# Dead code elimination : remove unused code
-# "-dce no" : do not remove unused code
-# "-dce std" : remove unused code in the std lib (default)
-# "-dce full" : remove all unused code
--dce full
-
-';
-
-// [mck] every target should have it's own command settings
-switch (target) {
-	case 'java':
-		str += '# run $target application\n-cmd cd bin/java\n-cmd java -jar Main-Debug.jar\n';
-	case 'cpp':
-		str += '# run $target application\n-cmd bin/Main-debug\n';
-	case 'js':
-		str += '# run $target application';
-		str += '# -cmd open -a Google\\ Chrome http://localhost:2000/\n';
-		str += '# -cmd nekotools server';
-	case 'php':
-		str += '# run $target application';
-		str += '# -cmd open -a Google\\ Chrome http://localhost:2000/\n';
-		str += '# folder images\n# -cmd cp -R src/assets/img bin/www\n';
-		str += '# htaccess file\n-cmd cp -R src/assets/.htaccess bin/www\n';
-	case 'python':
-		str += '# run $target application';
-		str += '-cmd bin\n';
-		str += '-cmd python3 ${sanitize(projectName)}.py\n';
-	case 'neko':
-		str += '# run $target application';
-		str += '-cmd nekotools boot bin/${sanitize(projectName)}.n\n';
-		str += '# -cmd ${target} bin/${sanitize(projectName)}.n\n';
-	// default : str += '-${target} bin/${sanitize(projectName)}.${target}';
-}
-
-str += '
-
-# Additional commandline actions can be done here
-# -cmd cp -R src/assets/img bin/www
-
-# Add extra targets
-# --next
-
-';
-
-
- 		if(content != null) str = content;
-
-		writeFile(path, name, str);
-		Sys.println('\t\tcreate ${target}.hxml');
+	function createHxmlAll(path:String, name:String){
+		createWithTemplate(path, name, "buildAll");
+		Sys.println('\tcreate $name');
 	}
 
+	private function createHxml(path:String, name:String, target:String, ?isDebug = true, ?content:String ) : Void
+	{
+		var template = '';
+
+		// [mck] every target should have it's own export setting
+		switch (target) {
+			// case 'cpp': template = '-${target} bin';
+			// case 'cs': 							str += '-${target} bin/${sanitize(projectName)}.exe';
+			// case 'java': 						str += '-${target} bin/java';// ${sanitize(projectName)}.jar';
+			// case 'flash': 						str += '-swf bin/${sanitize(projectName)}.swf';
+			// case 'neko': 						str += '-${target} bin/${sanitize(projectName)}.n';
+			// case 'python': 						str += '-${target} bin/${sanitize(projectName)}.py';
+			case 'cpp': template  = new HxmlCpp(isDebug).template();
+			case 'cs': template  = new HxmlCs(isDebug).template();
+			case 'java': template  = new HxmlJava(isDebug).template();
+			case 'flash': template  = new HxmlFlash(isDebug).template();
+			case 'neko': template  = new HxmlNeko(isDebug).template();
+			case 'python': template  = new HxmlPython(isDebug).template();
+			case 'js' :	 template = new HxmlJs(isDebug).template();
+			case 'node': template = new HxmlNode(isDebug).template();
+			default :  template = new HxmlBase(isDebug).template();
+		}
+
+		var t = new haxe.Template(template);
+    	var output = t.execute({
+			projectAuthor : projectAuthor,
+			projectFolder : projectFolder,
+			projectLicense: projectLicense,
+			projectWebsite : projectWebsite,
+			projectName : projectName,
+			projectTarget : projectTarget,
+			sprojectName : sanitize(projectName),
+			classname : name.split('.')[0]
+		});
+
+ 		if(content != null) output = content;
+
+		writeFile(path, name, output);
+		Sys.println('\t\tcreate ${target}.hxml');
+	}
 
 	function createBuildTargets (path:String)
 	{
@@ -373,17 +398,49 @@ str += '
 		}
 	}
 
-
-	function createPackage(path:String, name:String) : Void
+	function createPackage(path:String, name:String, target:String) : Void
 	{
-		createWithTemplate(path, name, "package");
+		switch (target) {
+			case 'node':
+				createWithTemplate(path, name, "packageNode");
+			case 'js':
+				createWithTemplate(path, name, "packageJs");
+			default:
+				createWithTemplate(path, name, "package");
+		}
+
 		Sys.println('\tcreate createPackage');
 	}
 
-	function createReadme(path:String, name:String) : Void
+	function createVSCode (path:String)
 	{
-		createWithTemplate(path, name, "readme");
-		Sys.println('\tcreate createReadme');
+		/**
+		-resource src/assets/vscode/settings.json@vscodeSettings
+		-resource src/assets/vscode/tasks.json@vscodeTasks
+		*/
+		createWithTemplate(path, 'settings.json', "vscodeSettings");
+		createWithTemplate(path, 'tasks.json', "vscodeTasks");
+		if(projectTarget == 'node'){
+			createWithTemplate(path, 'launch.json', "vscodeLaunch");
+		}
+		Sys.println('\tcreate createVSCode');
+	}
+
+	function createVersion (path:String)
+	{
+		var str = '$VERSION';
+		writeFile(path, '.version', str);
+		Sys.println('\tcreate .version');
+	}
+
+	function createReadme(path:String, name:String, ?isHaxe:Bool = false) : Void
+	{
+		if(isHaxe){
+			createWithTemplate(path, name, "readmeHaxe");
+		} else {
+			createWithTemplate(path, name, "readme");
+		}
+		// Sys.println('\tcreate createReadme');
 	}
 
 	function createTodo(path:String, name:String) : Void
@@ -400,6 +457,15 @@ str += '
 		fo.write(bytes);
 		fo.close();
 		Sys.println('\tcreate icon');
+	}
+
+	function createFavicon(path:String) : Void
+	{
+		var bytes = haxe.Resource.getBytes('favicon');
+		var fo:FileOutput = sys.io.File.write(projectFolder + path + '/favicon.ico', true);
+		fo.write(bytes);
+		fo.close();
+		Sys.println('\tcreate favicon');
 	}
 
 	function createZip()
@@ -448,37 +514,44 @@ Default methode to build this project
 cd \'${projectFolder}${sanitize(projectName)}\'
 haxe build.hxml
 echo done
-
 ```
+
+#Type of build
+
+- `build.hxml` 			: default start for (debug) build
+- `build_all.hxml` 		: start release and debug build
+- `build_debug.hxml` 	: start for (debug) build
+- `build_release.hxml` 	: start for (release) build
+
 ';
-
-if(projectTarget == 'js'){
-	str += '
-	#Build ${projectName} and start nekoserver and browser
-
-	Same as previous, but also start nekoserver and open Google Chrome browser.
-
-	Great for testing js
-	> Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, https, chrome-extension-resource.
-
-	```
-	cd \'${projectFolder}${sanitize(projectName)}\'
-	haxe build.hxml
-	';
 
 	switch (projectTarget) {
 		case 'java': str += 'cd \'${projectFolder}${sanitize(projectName)}/bin/java\'';
 		case 'php': str += 'cd \'${projectFolder}${sanitize(projectName)}/bin/www\'';
+		case 'node', 'nodejs', 'node.js': str += '
+#Build ${projectName} and start node.js
+cd \'${projectFolder}${sanitize(projectName)}/bin/www\'';
+		case 'js': str += '
+#Build ${projectName} and start nekoserver and browser
+
+Same as previous, but also start nekoserver and open Google Chrome browser.
+
+Great for testing js
+> Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, https, chrome-extension-resource.
+
+```
+cd \'${projectFolder}${sanitize(projectName)}\'
+haxe build.hxml
+';
 		default : str += 'cd \'${projectFolder}${sanitize(projectName)}\'';
 	}
 
 	str += '
-	open -a Google\\ Chrome http://localhost:2000/
-	nekotools server
+open -a Google\\ Chrome http://localhost:2000/
+nekotools server
 
-	```
-	';
-}
+```
+';
 	str += '
 #Build ${projectName} using NPM watch
 
@@ -488,47 +561,76 @@ npm run watch
 
 ```
 
+#Install all (haxe)dependencies with haxelib
+```
+haxelib install build.hxml
+```
+
+#Install all (node)dependencies with NPM (node.js)
+```
+npm install
+```
+
 ';
 
 		writeFile(path, name, str);
 		Sys.println('\tcreate createBuild');
 	}
 
+
+	// TODO create custom gitignores
 	// ignore some files I generate
 	function createGitignore (path:String, name:String) : Void
 	{
 		// var str = 'BUILD.MD\n.DS_Store\ntest.hxml\n';
-		var str = 'BUILD.MD\n.DS_Store\nvscode-project.hxml\ntest.hxml\n';
+		// var str = '#https://github.com/github/gitignore\n\nBUILD.MD\n.DS_Store\ntest.hxml\n\nnode_modules\n\n_build\nbin\nbin_test\nbin_release';
+		var str = haxe.Resource.getString('GitIgnore');
 		writeFile(path, name, str);
 		Sys.println('\tcreate createGitignore');
 	}
 
-	function createXperimental(type:String)
+	function createXperimental(arr: Array<String>)
 	{
-		// [mck] should be a combination of project vs -x name
-		switch (type.toLowerCase())
-		{
-			case 'test' :
-				createWithTemplate(sanitize(projectName)+'/src','Test.hx', 'Class');
-			case 'flux' :
-				createFolder(sanitize(projectName)+'/src/store');
-				createZip();
-				// createImage(); // [mck] needs more love
-				createWithTemplate(sanitize(projectName)+'/src/store','Store.hx', 'Singleton');
-			case 'openfl':
-				trace('fix this');
 
+		for (i in 0 ... arr.length) {
+			var type = arr[i].toLowerCase();
+			// [mck] should be a combination of project vs -x name
+			Sys.println('\tcreate "$type" specific files');
+			switch (type)
+			{
+				case 'test' :
+					createWithTemplate(sanitize(projectName)+'/src','Test.hx', 'Class');
+				case 'flux' :
+					createFolder(sanitize(projectName)+'/src/store');
+					createZip();
+					// createImage(); // [mck] needs more love
+					createWithTemplate(sanitize(projectName)+'/src/store','Store.hx', 'Singleton');
+				case 'openfl':
+					trace('fix this');
+				case 'heroku':
+					trace(':: heroku stuff ::');
+				case 'gitlab':
+					// trace(':: gitlab stuff ::');
+					// createGitLab(sanitize(projectName),'.gitlab-ci.yml', projectTarget);
+					createWithTemplate(sanitize(projectName),'.gitlab-ci.yml','Gitlab');
+				case 'docker':
+					// trace(':: docker stuff ::');
+					createWithTemplate(sanitize(projectName),'Dockerfile','DockerFile');
+					createWithTemplate(sanitize(projectName),'.dockerignore','DockerIgnore');
+				default:
+					trace('unknown x target: $type');
+			}
 		}
 
-		switch (projectTarget.toLowerCase())
-		{
-			case 'neko':
-				createWithTemplate(sanitize(projectName)+'/src','Main.hx', 'MainNeko');
-				createFolder(sanitize(projectName)+'/src/assets');
-				// TODO [mck] create .mtt file
+		// switch (projectTarget.toLowerCase())
+		// {
+		// 	case 'neko':
+		// 		createWithTemplate(sanitize(projectName)+'/src','Main.hx', 'MainNeko');
+		// 		createFolder(sanitize(projectName)+'/src/assets');
+		// 		// TODO [mck] create .mtt file
 
-			default : Sys.println('\tthere is no -x for ${projectTarget} yet!');
-		}
+		// 	default : Sys.println('\tthere is no -x for ${projectTarget} yet!');
+		// }
 	}
 
 	// ____________________________________ show app stuff ____________________________________
@@ -549,7 +651,7 @@ projectLicense : ${projectLicense}
 
 	function showHelp () : Void {
 		Sys.println('
-HX-GENERATE
+HX-GENERATE :: version $VERSION
 
 how to use:
 neko hxgenerate -cd \'path/to/folder\' -name \'${projectName}\' -license \'${projectLicense}\' -author \'${projectAuthor}\' -target \'${projectTarget}\'
@@ -560,12 +662,9 @@ neko hxgenerate -cd \'path/to/folder\' -name \'${projectName}\' -license \'${pro
 	-license : project license (MIT, etc)
 	-author : project author (you?)
 	-website : project website (from you?)
-	-target : project target (js, cpp, flash, neko, etc)
+	-target : project target : ${targetArr}
 
-	-x : experimental project generation
-			-x flux
-			-x 			(with target neko will generate quick startup)
-
+	-x : experimental project generation : ${xtargetArr}
 
 ');
 	}
@@ -600,4 +699,15 @@ typedef HxGenConfig =
 	var author : String;// = 'Matthijs Kamstra aka [mck]';
 	var license : String;// = 'MIT';
 	var website : String;
+}
+
+enum HaxeTarget {
+	Php;
+	Neko;
+	Flash;
+	Js;
+	Cpp;
+	Cs;
+	Python;
+	Lua;
 }

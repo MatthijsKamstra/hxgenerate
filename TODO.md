@@ -1,6 +1,9 @@
 # TODO
 
-- create more -x files 
+- create more -x files
+
+
+- virtual studio code assets
 
 
 

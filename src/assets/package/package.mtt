@@ -1,0 +1,18 @@
+{
+	"license": "::projectLicense::",
+	"name": "::sprojectName::",
+	"version": "0.0.1",
+	"description": "",
+	"private": true,
+	"author": "::projectAuthor::",
+	"scripts": {
+		"prewatch": "haxe build_all.hxml",
+		"watch": "onchange 'src/*.hx' 'src/*/*.hx' 'src/*/*/*.hx' 'src/*/*/*/*.hx' -v -- haxe build_all.hxml"
+	},
+	"dependencies": {
+	},
+	"devDependencies": {
+		"livereload": "0.6.0",
+		"onchange": "3.0.2"
+	}
+}

@@ -16,18 +16,36 @@
 # Resources
 -resource src/assets/build/build.mtt@build
 -resource src/assets/build/buildNeko.mtt@buildNeko
+-resource src/assets/build/build_all.mtt@buildAll
+
 -resource src/assets/classes/Class.mtt@Class
+-resource src/assets/classes/App.mtt@App
 -resource src/assets/classes/Singleton.mtt@Singleton
--resource src/assets/classes/Main.mtt@Main
 -resource src/assets/classes/MainNeko.mtt@MainNeko
--resource src/assets/classes/MainPHP.mtt@MainPHP
--resource src/assets/classes/MainJS.mtt@MainJS
+
+-resource src/assets/git/gitlab-ci.mtt@Gitlab
+-resource src/assets/git/gitignore.mtt@GitIgnore
+
+-resource src/assets/docker/Dockerfile.mtt@DockerFile
+-resource src/assets/docker/dockerignore.mtt@DockerIgnore
+
+-resource src/assets/package/package.mtt@package
+-resource src/assets/package/package_js.mtt@packageJs
+-resource src/assets/package/package_node.mtt@packageNode
+
 -resource src/assets/index.mtt@index
--resource src/assets/package.mtt@package
 -resource src/assets/readme.mtt@readme
+-resource src/assets/readme_haxe.mtt@readmeHaxe
 -resource src/assets/icon.png@icon
+-resource src/assets/favicon.ico@favicon
 -resource src/assets/eboy.png@eboy
 -resource src/assets/packs/flux.zip@fluxzip
+
+-resource src/assets/vscode/settings.json@vscodeSettings
+-resource src/assets/vscode/tasks.json@vscodeTasks
+-resource src/assets/vscode/launch.json@vscodeLaunch
+-resource src/assets/openfl/Main.hx@MainOpenfl
+-resource src/assets/openfl/project.xml@buildOpenfl
 
 #dead code elimination : remove unused code
 #"-dce no" : do not remove unused code

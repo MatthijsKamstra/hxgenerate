@@ -21,6 +21,8 @@
 	<body>
 		<h1>Hello, world!</h1>
 
+		<!-- https://github.com/livereload/livereload-js -->
+		<script src="http://localhost:35729/livereload.js"></script>
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<!-- Include all compiled plugins (below), or include individual files as needed -->

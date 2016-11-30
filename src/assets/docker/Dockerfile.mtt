@@ -1,0 +1,23 @@
+FROM ubuntu:16.04
+MAINTAINER Florens Douwes <florens@fonk.amsterdam>
+
+RUN apt update && apt install -y \
+    haxe \
+    git \
+    nodejs
+
+RUN haxelib setup /opt/haxelib
+
+# TODO: haxelib install gets confused when build files list dependencies
+# that were installed with `haxelib git`.
+# Skip installing with a build file and install the dependencies manually here.
+# RUN haxelib install build_test.hxml
+RUN cd /opt/haxelib && haxelib git js-kit https://github.com/clemos/haxe-js-kit.git haxelib && \
+    haxelib install hxnodejs && \
+    haxelib install msignal
+
+ADD . /opt/jack-hauwer
+WORKDIR /opt/jack-hauwer
+
+# RUN haxe build_release.hxml
+# CMD ["nodejs", "./bin_release/app.js"]

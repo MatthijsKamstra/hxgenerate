@@ -4,4 +4,5 @@ test.hxml
 bin/test/*
 vscode-project.hxml
 BUILD.MD
-bin/example/example_java/bin/java
+bin/example/*
+bin/example/*/*
