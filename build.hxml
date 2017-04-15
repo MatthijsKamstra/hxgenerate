@@ -1,18 +1,9 @@
 # libs
 -lib format
-
 #integrate files to classpath
 -cp src
-
-#this class wil be used as entry point for your app.
--main Main
-
-#neko target
--neko bin/hxgenerate.n
-
 #Add debug information
 -debug
-
 # Resources
 -resource src/assets/build/build.mtt@build
 -resource src/assets/build/buildNeko.mtt@buildNeko
@@ -28,6 +19,8 @@
 
 -resource src/assets/docker/Dockerfile.mtt@DockerFile
 -resource src/assets/docker/dockerignore.mtt@DockerIgnore
+
+-resource src/assets/haxelib/haxelib.mtt@haxelib
 
 -resource src/assets/package/package.mtt@package
 -resource src/assets/package/package_js.mtt@packageJs
@@ -53,7 +46,19 @@
 #"-dce full" : remove all unused code
 -dce full
 
+--each
+
+
+#this class wil be used as entry point for your app.
+-main Main
+#neko target
+-neko bin/hxgenerate.n
 # create executable file with no extension.
 -cmd nekotools boot bin/hxgenerate.n
 # test, should see help files
 -cmd neko bin/hxgenerate
+
+--next
+
+-main Main
+-neko run.n

@@ -6,7 +6,6 @@ This is a [Haxe](http://www.haxe.org) project, read more about it in the [README
 
 
 - project target 	: ::projectTarget::
-- project folder 	: ::projectFolder::::sprojectName::
 - project license 	: ::projectLicense::
 - project author 	: ::projectAuthor::
 - project website 	: ::projectWebsite::

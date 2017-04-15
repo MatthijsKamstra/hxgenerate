@@ -13,7 +13,7 @@ class MainNode extends MainBase implements IMainBase {
 	{
 		_import =
 '
-import js.Node.*
+import js.Node.*;
 import js.Node;
 import js.Node.console;
 

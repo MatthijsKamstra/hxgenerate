@@ -4,8 +4,6 @@ using StringTools;
 
 class MainJS extends MainBase implements IMainBase {
 
-
-
 	public function new() {
 		super();
 		init();
@@ -22,7 +20,11 @@ import js.html.*;
 import model.constants.App;
 ';
 
-		_vars ='';
+		_vars =
+'
+	var document : js.html.HTMLDocument = js.Browser.document;
+	var container : js.html.DivElement;
+';
 
 		_func =
 '
@@ -32,12 +34,26 @@ import model.constants.App;
 
 			// var container = document.getElementById("prop");
 			// container.innerHTML = \'html\';
-			// loadData();
+
+			initHTML();
+			loadData();
 		});
 	}
 
+	function initHTML () {
+		container = document.createDivElement();
+		container.id = "::sprojectName::";
+		container.className = "container";
+		document.body.appendChild(container);
+
+		var h1 = document.createElement(\'h1\');
+		h1.innerText = "::projectName::";
+		container.appendChild(h1);
+	}
+
 	function loadData(){
-		var req = new haxe.Http(\'merge_data_array.json\');
+		var url = \'http://ip.jsontest.com/\';
+		var req = new haxe.Http(url);
 		// req.setHeader(\'Content-Type\', \'application/json\');
 		// req.setHeader(\'auth\', \'$${App.TOKEN}\');
 		req.onData = function (data : String) {

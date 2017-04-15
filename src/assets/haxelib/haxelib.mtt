@@ -1,0 +1,11 @@
+{
+	"name": "::projectName::",
+	"url" : "https://github.com/MatthijsKamstra",
+	"license": "::projectLicense::",
+	"tags": ["haxe", "generate", "projectTarget"],
+	"description": "Describe project ::projectName:: by ::projectAuthor::",
+	"version": "0.0.1",
+	"classPath": "src",
+	"releasenote": "",
+	"contributors": ["::projectAuthor::"]
+}

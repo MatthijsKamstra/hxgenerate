@@ -18,6 +18,9 @@ using StringTools;
 class Main
 {
 	/**
+	* 0.1.5 haxelib.json added, removed folder ref.
+	* 0.1.4 haxelib run added
+	* 0.1.3 initial files for meteor added
 	* 0.1.2 docker file added, in combination with gitlab, -x working for docker/gitlab
 	* 0.1.1 yml file for node.js projects (gitlab) / add .version file
 	* 0.1.0 bin favicon / hxml generation with debug / update haxe info and build_all / gitignore node_modules
@@ -31,7 +34,7 @@ class Main
 	* 0.0.2 update all target, add more output nicities
 	* 0.0.1 initial
 	*/
-	private var VERSION : String = '0.1.2';
+	private var VERSION : String = '0.1.5';
 
 	private var projectFolder 	: String = '';
 	private var projectTarget 	: String = 'js';
@@ -43,7 +46,7 @@ class Main
 
 	// private var targetArr : Array<String> = ["cpp", "js", "javascript", "flash", "neko", "php", "cs", "java", "python", 'lua', 'node', 'nodejs', 'node.js', 'openfl'];
 	private var targetArr : Array<String> = ["cpp", "js", "flash", "neko", "php", "cs", "java", "python", 'lua', 'node', 'openfl'];
-	private var xtargetArr : Array<String> = ['test','flux','openfl','heroku','gitlab','docker'];
+	private var xtargetArr : Array<String> = ['test','flux','openfl','heroku','gitlab','docker', 'meteor'];
 
 	var isXperimental: Bool = false;
 
@@ -94,6 +97,7 @@ class Main
 		createHxml(sanitize(projectName),'build.hxml', projectTarget);
 		createHxml(sanitize(projectName),'build_release.hxml', projectTarget, false);
 		createHxml(sanitize(projectName),'build_debug.hxml', projectTarget, true);
+		createHaxelib(sanitize(projectName),'package.json', projectTarget);
 		createPackage(sanitize(projectName),'package.json', projectTarget);
 		createReadme(sanitize(projectName),'README.MD');
 		createReadme(sanitize(projectName),'README_HAXE.MD', true);
@@ -412,6 +416,13 @@ class Main
 		Sys.println('\tcreate createPackage');
 	}
 
+	function createHaxelib(path:String, name:String, target:String) : Void
+	{
+		createWithTemplate(path, name, "haxelib");
+
+		Sys.println('\tcreate createHaxelib');
+	}
+
 	function createVSCode (path:String)
 	{
 		/**
@@ -617,6 +628,33 @@ npm install
 					// trace(':: docker stuff ::');
 					createWithTemplate(sanitize(projectName),'Dockerfile','DockerFile');
 					createWithTemplate(sanitize(projectName),'.dockerignore','DockerIgnore');
+				case 'meteor':
+					trace(':: meteor stuff ::');
+					createFolder(sanitize(projectName)+'/www');
+					createFolder(sanitize(projectName)+'/src/client');
+					createFolder(sanitize(projectName)+'/src/client/templates');
+					createFolder(sanitize(projectName)+'/src/server');
+					createFolder(sanitize(projectName)+'/src/shared');
+					createFolder(sanitize(projectName)+'/src/shared/model');
+					createFolder(sanitize(projectName)+'/bin/server');
+					createFolder(sanitize(projectName)+'/bin/client');
+					createFolder(sanitize(projectName)+'/bin/client/lib');
+					createFolder(sanitize(projectName)+'/bin/client/lib/css');
+					createFolder(sanitize(projectName)+'/bin/client/lib/js');
+					createFolder(sanitize(projectName)+'/bin/client/style');
+					createFolder(sanitize(projectName)+'/bin/client/templates');
+					createFolder(sanitize(projectName)+'/bin/public');
+					createFolder(sanitize(projectName)+'/bin/public/img');
+					createFolder(sanitize(projectName)+'/bin/public/fonts');
+
+					createWithTemplate(sanitize(projectName)+'/src/client/templates/','Home.hx','Class');
+					createWithTemplate(sanitize(projectName)+'/src/client/','Client.hx','Class');
+					createWithTemplate(sanitize(projectName)+'/src/server/','Server.hx','Class');
+					createWithTemplate(sanitize(projectName)+'/src/shared/','Shared.hx','Class');
+					createWithTemplate(sanitize(projectName)+'/src/shared/','AppRouter.hx','Class');
+					createWithTemplate(sanitize(projectName)+'/src/shared/model/','Model.hx','Class');
+					// writeFile(sanitize(projectName)+'/src/client/templates/', 'Home.hx', 'package template;\n\nclass Home {\n\tstatic public function init(){\n\n\t}\n}');
+
 				default:
 					trace('unknown x target: $type');
 			}

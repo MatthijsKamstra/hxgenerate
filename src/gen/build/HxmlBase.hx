@@ -11,7 +11,7 @@ class HxmlBase implements IHxmlBase {
 	public var TARGET = '::target::';
 	public var RUN    = '::run::';
 	public var DEBUG  = '::debug::';
-	public var STATE = '::STATE::';
+	public var STATE  = '::STATE::';
 
 	public var _name   = 'Haxe';
 	public var _libs   = '#-lib foobar';
@@ -61,7 +61,7 @@ class HxmlBase implements IHxmlBase {
 	public function new(isDebug) {
 		this.isDebug = isDebug;
 		if(!this.isDebug){
-			_debug  = '#-debug';
+			_debug  = '#-debug\n\n--no-traces';
 			_state = '-D state=release';
 		}
 	}
