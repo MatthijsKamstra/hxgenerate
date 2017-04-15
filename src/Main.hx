@@ -97,7 +97,7 @@ class Main
 		createHxml(sanitize(projectName),'build.hxml', projectTarget);
 		createHxml(sanitize(projectName),'build_release.hxml', projectTarget, false);
 		createHxml(sanitize(projectName),'build_debug.hxml', projectTarget, true);
-		createHaxelib(sanitize(projectName),'package.json', projectTarget);
+		createHaxelib(sanitize(projectName),'haxelib.json');
 		createPackage(sanitize(projectName),'package.json', projectTarget);
 		createReadme(sanitize(projectName),'README.MD');
 		createReadme(sanitize(projectName),'README_HAXE.MD', true);
@@ -416,7 +416,7 @@ class Main
 		Sys.println('\tcreate createPackage');
 	}
 
-	function createHaxelib(path:String, name:String, target:String) : Void
+	function createHaxelib(path:String, name:String) : Void
 	{
 		createWithTemplate(path, name, "haxelib");
 
