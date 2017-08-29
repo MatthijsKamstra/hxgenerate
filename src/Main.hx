@@ -18,6 +18,8 @@ using StringTools;
 class Main
 {
 	/**
+	* 0.1.7 remove jQueryExtern, update bootstrap 4
+	* 0.1.6 remove VSCode folder
 	* 0.1.5 haxelib.json added, removed folder ref.
 	* 0.1.4 haxelib run added
 	* 0.1.3 initial files for meteor added
@@ -34,7 +36,7 @@ class Main
 	* 0.0.2 update all target, add more output nicities
 	* 0.0.1 initial
 	*/
-	private var VERSION : String = '0.1.5';
+	private var VERSION : String = '0.1.7';
 
 	private var projectFolder 	: String = '';
 	private var projectTarget 	: String = 'js';
@@ -88,7 +90,7 @@ class Main
 		createFolder(sanitize(projectName)+'/bin');
 		createFolder(sanitize(projectName)+'/src');
 		createFolder(sanitize(projectName)+'/_build');
-		createFolder(sanitize(projectName)+'/.vscode');
+		// createFolder(sanitize(projectName)+'/.vscode');
 
 		createHx(sanitize(projectName)+'/src','Main.hx');
 		createTargetSpecific(projectTarget);
@@ -106,7 +108,7 @@ class Main
 		createGitignore(sanitize(projectName),'.gitignore');
 		createIcon(sanitize(projectName),'icon.png');
 		createFavicon(sanitize(projectName)+'/bin');
-		createVSCode(sanitize(projectName)+'/.vscode');
+		// createVSCode(sanitize(projectName)+'/.vscode');
 		createVersion(sanitize(projectName));
 
 		writeConfig();

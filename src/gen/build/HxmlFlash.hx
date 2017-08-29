@@ -12,7 +12,7 @@ class HxmlFlash extends HxmlBase implements IHxmlBase {
 	function init ()
 	{
 		_name = "Flash";
-		_libs      = '-lib jQueryExtern\n#-lib js-kit\n#-lib hxnodejs\n';
+		_libs      = '#-lib js-kit\n#-lib hxnodejs\n';
 		_target    = ''; // str += '-swf bin/${sanitize(projectName)}.swf';
 		_run       = '';
 	}

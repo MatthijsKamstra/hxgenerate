@@ -12,7 +12,7 @@ class HxmlNode extends HxmlBase implements IHxmlBase {
 	function init ()
 	{
 		_name   = "Node.js";
-		_libs   = '#-lib jQueryExtern\n-lib js-kit\n-lib hxnodejs';
+		_libs   = '-lib js-kit\n-lib hxnodejs';
 		_target =
 '-js bin/::sprojectName::.js
 
