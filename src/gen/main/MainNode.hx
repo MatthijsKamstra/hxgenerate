@@ -51,7 +51,8 @@ using StringTools;
 		server = js.node.Http.createServer( cast app );
 		io     = new js.npm.socketio.Server(server);
 
-		app.use(new Favicon(Node.__dirname + \'/public/favicon.gif\'));
+		// app.use(new Favicon(Node.__dirname + \'/public/favicon.gif\'));
+		app.use(new Favicon(Node.__dirname + \'/favicon.gif\'));
 
 		app.get( \'/\' , function (req, res) {
 			res.send(\'Welcome to the Node.js server\');

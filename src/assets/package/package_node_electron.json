@@ -1,0 +1,30 @@
+{
+  "license": "MIT",
+  "name": "ten_k",
+  "version": "0.0.1",
+  "description": "",
+  "private": true,
+  "author": "Matthijs Kamstra aka [mck]",
+  "scripts": {
+    "prewatch": "haxe build_all.hxml",
+    "watch": "onchange 'src/*.hx' 'src/*/*.hx' 'src/*/*/*.hx' 'src/*/*/*/*.hx' -v -- haxe build_all.hxml & nodemon bin/server.js --ignore bin/_data/ --ignore bin/_config/  & livereload bin/",
+    "local": "haxe build_all.hxml & node bin/server.js",
+    "server": "nodemon bin/server.js",
+    "electronbuild": "electron bin/",
+    "electron": "haxe build_debug.hxml && electron bin/",
+    "package": "electron-packager bin/ FONK --platform darwin --out download --electron-version 1.6.11 --overwrite --icon=src/assets/icons/fonk.png.icns"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "electron": "^1.8.1",
+    "express": "^4.16.2",
+    "morgan": "^1.9.0",
+    "serve-favicon": "^2.4.5",
+    "socket.io": "^2.0.4"
+  },
+  "devDependencies": {
+    "livereload": "0.6.0",
+    "nodemon": "^1.12.1",
+    "onchange": "3.0.2"
+  }
+}

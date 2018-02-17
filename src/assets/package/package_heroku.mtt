@@ -1,0 +1,22 @@
+{
+	"license": "::projectLicense::",
+	"name": "::sprojectName::",
+	"version": "0.0.1",
+	"description": "",
+	"private": true,
+	"author": "::projectAuthor::",
+	"engines": {
+		"node": "8.6.0"
+	},
+	"main": "index.js",
+	"scripts": {
+		"start": "node index.js"
+	},
+	"dependencies": {
+		"express": "^4.16.2",
+		"serve-favicon": "*",
+		"socket.io": "^2.0.3"
+	},
+	"devDependencies": {
+	}
+}

@@ -12,7 +12,7 @@ class HxmlJs extends HxmlBase implements IHxmlBase {
 	function init ()
 	{
 		_name   = "JavaScript";
-		_libs   = '#-lib js-kit\n#-lib hxnodejs';
+		_libs   = '#-lib js-kit\n#-lib hxnodejs#\n# -lib vue\n# -lib hxexterns\n# -lib haxelow';
 		_target =
 '-::projectTarget:: bin/::sprojectName::.js
 

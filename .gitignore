@@ -6,3 +6,4 @@ vscode-project.hxml
 BUILD.MD
 bin/example/*
 bin/example/*/*
+node_modules

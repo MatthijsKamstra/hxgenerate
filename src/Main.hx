@@ -18,6 +18,9 @@ using StringTools;
 class Main
 {
 	/**
+	* 0.2.1 bootstrap version, added project name to app constants
+	* 0.2.0 electron
+	* 0.1.8 cleaning up some file, add real data for Heroku: Procfile, .env, package.json
 	* 0.1.7 remove jQueryExtern, update bootstrap 4
 	* 0.1.6 remove VSCode folder
 	* 0.1.5 haxelib.json added, removed folder ref.
@@ -36,7 +39,7 @@ class Main
 	* 0.0.2 update all target, add more output nicities
 	* 0.0.1 initial
 	*/
-	private var VERSION : String = '0.1.7';
+	private var VERSION : String = '0.2.1';
 
 	private var projectFolder 	: String = '';
 	private var projectTarget 	: String = 'js';
@@ -48,7 +51,7 @@ class Main
 
 	// private var targetArr : Array<String> = ["cpp", "js", "javascript", "flash", "neko", "php", "cs", "java", "python", 'lua', 'node', 'nodejs', 'node.js', 'openfl'];
 	private var targetArr : Array<String> = ["cpp", "js", "flash", "neko", "php", "cs", "java", "python", 'lua', 'node', 'openfl'];
-	private var xtargetArr : Array<String> = ['test','flux','openfl','heroku','gitlab','docker', 'meteor'];
+	private var xtargetArr : Array<String> = ['test','flux','openfl','heroku','gitlab','docker', 'meteor', 'electron'];
 
 	var isXperimental: Bool = false;
 
@@ -89,6 +92,7 @@ class Main
 		createFolder(sanitize(projectName));
 		createFolder(sanitize(projectName)+'/bin');
 		createFolder(sanitize(projectName)+'/src');
+		createFolder(sanitize(projectName)+'/docs');
 		createFolder(sanitize(projectName)+'/_build');
 		// createFolder(sanitize(projectName)+'/.vscode');
 
@@ -409,6 +413,8 @@ class Main
 		switch (target) {
 			case 'node':
 				createWithTemplate(path, name, "packageNode");
+			case 'heroku':
+				createWithTemplate(path, name, "packageHeroku");
 			case 'js':
 				createWithTemplate(path, name, "packageJs");
 			default:
@@ -519,7 +525,7 @@ class Main
 
 	function createBuild(path:String, name:String) : Void
 	{
-		var str = '#Build ${projectName}
+		var str = '# Build ${projectName}
 
 Default methode to build this project
 
@@ -529,7 +535,7 @@ haxe build.hxml
 echo done
 ```
 
-#Type of build
+# Type of build
 
 - `build.hxml` 			: default start for (debug) build
 - `build_all.hxml` 		: start release and debug build
@@ -542,10 +548,12 @@ echo done
 		case 'java': str += 'cd \'${projectFolder}${sanitize(projectName)}/bin/java\'';
 		case 'php': str += 'cd \'${projectFolder}${sanitize(projectName)}/bin/www\'';
 		case 'node', 'nodejs', 'node.js': str += '
-#Build ${projectName} and start node.js
+# Build ${projectName} and start node.js
+
+```
 cd \'${projectFolder}${sanitize(projectName)}/bin/www\'';
 		case 'js': str += '
-#Build ${projectName} and start nekoserver and browser
+# Build ${projectName} and start nekoserver and browser
 
 Same as previous, but also start nekoserver and open Google Chrome browser.
 
@@ -566,7 +574,7 @@ nekotools server
 ```
 ';
 	str += '
-#Build ${projectName} using NPM watch
+# Build ${projectName} using NPM watch
 
 ```
 cd \'${projectFolder}${sanitize(projectName)}\'
@@ -574,12 +582,12 @@ npm run watch
 
 ```
 
-#Install all (haxe)dependencies with haxelib
+# Install all (haxe)dependencies with haxelib
 ```
 haxelib install build.hxml
 ```
 
-#Install all (node)dependencies with NPM (node.js)
+# Install all (node)dependencies with NPM (node.js)
 ```
 npm install
 ```
@@ -621,15 +629,93 @@ npm install
 				case 'openfl':
 					trace('fix this');
 				case 'heroku':
-					trace(':: heroku stuff ::');
+					// trace(':: heroku stuff ::');
+					writeFile(sanitize(projectName) + "/bin", "Procfile", "web: node index.js");
+					writeFile(sanitize(projectName) + "/bin", ".env", "TIMES=2");
+					createPackage(sanitize(projectName) + "/bin", "package.json", "heroku");
+var buildheroku =
+'# BUILD heroku
+
+<https://devcenter.heroku.com/articles/getting-started-with-nodejs#introduction>
+
+## Login on Heroku and check versions
+
+```
+heroku login
+# get version of node, npm and git
+node -v
+npm -v
+git --version
+```
+
+
+## make sure all files are installed
+
+globally
+
+```
+cd bin/heroku
+npm install -g
+```
+
+## Update Heroku
+
+```
+cd bin/heroku
+git push heroku master
+heroku ps:scale web=1
+heroku open
+```
+
+## Run locally
+
+```
+cd bin/heroku
+echo `Open http://localhost:5000 with your web browser!`
+echo `Ctrl+C to exit`
+heroku local web
+
+```
+
+';
+
+var build = '
+-lib js-kit
+-lib hxnodejs
+-cp src
+-main Main
+-js bin/heroku/index.js
+-D source-map-content
+# -D hxnodejs_no_version_warning
+-D state=debug
+-debug
+-dce full
+';
+
+					writeFile(sanitize(projectName), "BUILD_HEROKU.MD", buildheroku);
+					writeFile(sanitize(projectName), "build_heroku.hxml", build);
 				case 'gitlab':
 					// trace(':: gitlab stuff ::');
 					// createGitLab(sanitize(projectName),'.gitlab-ci.yml', projectTarget);
 					createWithTemplate(sanitize(projectName),'.gitlab-ci.yml','Gitlab');
+					// createFolder(sanitize(projectName)+'/docs');
 				case 'docker':
 					// trace(':: docker stuff ::');
 					createWithTemplate(sanitize(projectName),'Dockerfile','DockerFile');
 					createWithTemplate(sanitize(projectName),'.dockerignore','DockerIgnore');
+				case 'electron':
+					trace(':: electron stuff ::');
+					// createWithTemplate(sanitize(projectName),'Dockerfile','DockerFile');
+					// createWithTemplate(sanitize(projectName),'.dockerignore','DockerIgnore');
+					createFolder(sanitize(projectName)+'/download');
+
+					createWithTemplate(sanitize(projectName)+'/bin', "package.json", 'packageElectron');
+					createWithTemplate(sanitize(projectName)+'/src', "Main.hx", 'MainElectron');
+					createWithTemplate(sanitize(projectName)+'/src', "MainMenu.hx", 'MainMenuElectron');
+					createWithTemplate(sanitize(projectName)+'/src', "MainServer.hx", 'MainServerElectron');
+
+
+
 				case 'meteor':
 					trace(':: meteor stuff ::');
 					createFolder(sanitize(projectName)+'/www');

@@ -9,10 +9,14 @@
 -resource src/assets/build/buildNeko.mtt@buildNeko
 -resource src/assets/build/build_all.mtt@buildAll
 
+# classes
 -resource src/assets/classes/Class.mtt@Class
 -resource src/assets/classes/App.mtt@App
 -resource src/assets/classes/Singleton.mtt@Singleton
 -resource src/assets/classes/MainNeko.mtt@MainNeko
+-resource src/assets/classes/electron/Main.hx@MainElectron
+-resource src/assets/classes/electron/MainMenu.hx@MainMenuElectron
+-resource src/assets/classes/electron/MainServer.hx@MainServerElectron
 
 -resource src/assets/git/gitlab-ci.mtt@Gitlab
 -resource src/assets/git/gitignore.mtt@GitIgnore
@@ -22,9 +26,13 @@
 
 -resource src/assets/haxelib/haxelib.mtt@haxelib
 
+# package
 -resource src/assets/package/package.mtt@package
 -resource src/assets/package/package_js.mtt@packageJs
 -resource src/assets/package/package_node.mtt@packageNode
+-resource src/assets/package/package_heroku.mtt@packageHeroku
+-resource src/assets/package/package_electron.mtt@packageElectron
+-resource src/assets/package/package_node_electron.json@packageNodeElectron
 
 -resource src/assets/index.mtt@index
 -resource src/assets/readme.mtt@readme
