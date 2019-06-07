@@ -56,6 +56,8 @@ using StringTools;
 
 		app.get( \'/\' , function (req, res) {
 			res.send(\'Welcome to the Node.js server\');
+			// res.sendFile( path.resolve(__dirname , \'../public/index.html\'));
+
 		});
 
 		io.on( \'connection\' , function (socket) {

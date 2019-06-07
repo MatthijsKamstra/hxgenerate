@@ -2,8 +2,8 @@
 
 ![](icon.png)
 
-I start lots of little [Haxe](http://www.haxe.org) projects and because OSX doesn't have a proper IDE, I used to use HIDE for this.
-It seem silly to use an unfinished editor (HIDE) and generate folder structure I will later open in [Sublime Text](https://www.sublimetext.com/) or [VSCode](https://code.visualstudio.com/)...
+I start lots of little [Haxe](http://www.haxe.org) projects.
+To get some quick bootstrapped haxe project for [VSCode](https://code.visualstudio.com/)
 
 So this project will fix that: I now generate Haxe project folders with HxGenerate.
 

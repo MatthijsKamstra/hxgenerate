@@ -18,6 +18,8 @@ using StringTools;
 class Main
 {
 	/**
+	* 0.3.0 added hxformat, vscode folder returns, small update on C# target
+	* 0.2.2 bootstrap version
 	* 0.2.1 bootstrap version, added project name to app constants
 	* 0.2.0 electron
 	* 0.1.8 cleaning up some file, add real data for Heroku: Procfile, .env, package.json
@@ -39,7 +41,7 @@ class Main
 	* 0.0.2 update all target, add more output nicities
 	* 0.0.1 initial
 	*/
-	private var VERSION : String = '0.2.1';
+	private var VERSION : String = '0.3.0';
 
 	private var projectFolder 	: String = '';
 	private var projectTarget 	: String = 'js';
@@ -94,7 +96,7 @@ class Main
 		createFolder(sanitize(projectName)+'/src');
 		createFolder(sanitize(projectName)+'/docs');
 		createFolder(sanitize(projectName)+'/_build');
-		// createFolder(sanitize(projectName)+'/.vscode');
+		createFolder(sanitize(projectName)+'/.vscode');
 
 		createHx(sanitize(projectName)+'/src','Main.hx');
 		createTargetSpecific(projectTarget);
@@ -111,8 +113,9 @@ class Main
 		createTodo(sanitize(projectName),'TODO.MD');
 		createGitignore(sanitize(projectName),'.gitignore');
 		createIcon(sanitize(projectName),'icon.png');
+		createHxformat(sanitize(projectName),'hxformat.json');
 		createFavicon(sanitize(projectName)+'/bin');
-		// createVSCode(sanitize(projectName)+'/.vscode');
+		createVSCode(sanitize(projectName)+'/.vscode');
 		createVersion(sanitize(projectName));
 
 		writeConfig();
@@ -301,6 +304,9 @@ class Main
 			case 'php':
 				var template = new MainPHP().template();
 				createWithGenTemplate(path, name, template);
+			case 'cs':
+				var template = new MainCS().template();
+				createWithGenTemplate(path, name, template);
 			default:
 				var template = new MainBase().template();
 				createWithGenTemplate(path, name, template);
@@ -436,12 +442,14 @@ class Main
 		/**
 		-resource src/assets/vscode/settings.json@vscodeSettings
 		-resource src/assets/vscode/tasks.json@vscodeTasks
+		-resource src/assets/vscode/launch.json@vscodeLaunch
 		*/
 		createWithTemplate(path, 'settings.json', "vscodeSettings");
-		createWithTemplate(path, 'tasks.json', "vscodeTasks");
-		if(projectTarget == 'node'){
-			createWithTemplate(path, 'launch.json', "vscodeLaunch");
-		}
+		createWithTemplate(path, 'launch.json', "vscodeLaunch");
+		// createWithTemplate(path, 'tasks.json', "vscodeTasks");
+		// if(projectTarget == 'node'){
+		// 	createWithTemplate(path, 'launch.json', "vscodeLaunch");
+		// }
 		Sys.println('\tcreate createVSCode');
 	}
 
@@ -476,6 +484,13 @@ class Main
 		fo.write(bytes);
 		fo.close();
 		Sys.println('\tcreate icon');
+	}
+
+	function createHxformat(path:String, name:String) : Void
+	{
+		var str = '{"wrapping": {"methodChain": {"defaultWrap": "keep","rules": []}}}';
+		writeFile(path, name, str);
+		Sys.println('\tcreate hxformat.json');
 	}
 
 	function createFavicon(path:String) : Void

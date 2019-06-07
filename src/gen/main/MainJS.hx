@@ -22,7 +22,6 @@ import model.constants.App;
 
 		_vars =
 '
-	var document : js.html.HTMLDocument = js.Browser.document;
 	var container : js.html.DivElement;
 ';
 
@@ -30,7 +29,7 @@ import model.constants.App;
 '
 	function init() {
 		document.addEventListener("DOMContentLoaded", function(event) {
-			console.log(\'Dom ready :: build: $${App.BUILD} \');
+			console.log(\'$${App.NAME} Dom ready :: build: $${App.BUILD} \');
 
 			// var container = document.getElementById("prop");
 			// container.innerHTML = \'html\';

@@ -11,10 +11,10 @@ class HxmlCs extends HxmlBase implements IHxmlBase {
 
 	function init ()
 	{
-		_name = "Cs";
-		_libs      = '#-lib format\n#-lib markdown\n';
-		_target    = ''; // str += '-${target} bin/${sanitize(projectName)}.exe';
-		_run       = '';
+		_name = "Cs / C#";
+		_libs      = '#-lib format\n#-lib markdown\n-lib haxelow';
+		_target    = '-cs bin/cs'; // str += '-${target} bin/${sanitize(projectName)}.exe';
+		_run       = '-cmd cd bin/cs/bin\n-cmd mono Main.exe';
 	}
 
 

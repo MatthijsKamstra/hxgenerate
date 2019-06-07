@@ -24,7 +24,12 @@
 -resource src/assets/docker/Dockerfile.mtt@DockerFile
 -resource src/assets/docker/dockerignore.mtt@DockerIgnore
 
+# haxelib
 -resource src/assets/haxelib/haxelib.mtt@haxelib
+
+# vscode
+-resource src/assets/vscode/settings.json@vscodeSettings
+-resource src/assets/vscode/launch.json@vscodeLaunch
 
 # package
 -resource src/assets/package/package.mtt@package

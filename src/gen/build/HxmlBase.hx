@@ -52,6 +52,9 @@ class HxmlBase implements IHxmlBase {
 # Additional commandline actions can be done here
 # -cmd cp -R src/assets/img bin/www
 
+--next
+
+# run application
 ::run::
 
 # Add extra targets
