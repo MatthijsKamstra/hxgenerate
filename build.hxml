@@ -30,6 +30,7 @@
 # vscode
 -resource src/assets/vscode/settings.json@vscodeSettings
 -resource src/assets/vscode/launch.json@vscodeLaunch
+-resource src/assets/vscode/tasks.json@vscodeTasks
 
 # package
 -resource src/assets/package/package.mtt@package
@@ -47,9 +48,6 @@
 -resource src/assets/eboy.png@eboy
 -resource src/assets/packs/flux.zip@fluxzip
 
-# -resource src/assets/vscode/settings.json@vscodeSettings
-# -resource src/assets/vscode/tasks.json@vscodeTasks
-# -resource src/assets/vscode/launch.json@vscodeLaunch
 
 -resource src/assets/openfl/Main.hx@MainOpenfl
 -resource src/assets/openfl/project.xml@buildOpenfl

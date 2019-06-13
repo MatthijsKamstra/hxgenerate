@@ -18,6 +18,7 @@ using StringTools;
 class Main
 {
 	/**
+	* 0.3.1 added tasks.json in vscode folder
 	* 0.3.0 added hxformat, vscode folder returns, small update on C# target
 	* 0.2.2 bootstrap version
 	* 0.2.1 bootstrap version, added project name to app constants
@@ -41,7 +42,7 @@ class Main
 	* 0.0.2 update all target, add more output nicities
 	* 0.0.1 initial
 	*/
-	private var VERSION : String = '0.3.0';
+	private var VERSION : String = '0.3.1';
 
 	private var projectFolder 	: String = '';
 	private var projectTarget 	: String = 'js';
@@ -439,14 +440,9 @@ class Main
 
 	function createVSCode (path:String)
 	{
-		/**
-		-resource src/assets/vscode/settings.json@vscodeSettings
-		-resource src/assets/vscode/tasks.json@vscodeTasks
-		-resource src/assets/vscode/launch.json@vscodeLaunch
-		*/
 		createWithTemplate(path, 'settings.json', "vscodeSettings");
 		createWithTemplate(path, 'launch.json', "vscodeLaunch");
-		// createWithTemplate(path, 'tasks.json', "vscodeTasks");
+		createWithTemplate(path, 'tasks.json', "vscodeTasks");
 		// if(projectTarget == 'node'){
 		// 	createWithTemplate(path, 'launch.json', "vscodeLaunch");
 		// }
