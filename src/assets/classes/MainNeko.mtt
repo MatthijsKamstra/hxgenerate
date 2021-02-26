@@ -4,22 +4,22 @@ package;
  * @author ::projectAuthor::
  * ::projectLicense::
  * ::projectWebsite::
- */ 
+ */
 class Main {
-	
+
 	/**
 	 * 0.0.1 	initial release
 	 */
 	private var VERSION : String = '0.0.1';
-	
-	
+
+
 	private var projectFolder = Sys.getCwd ();
 
 	public function new (?args : Array<String>) {
 		trace( "Hello '::projectName::'" );
 
 		var args : Array<String> = args;
-		
+
 		for ( i in 0 ... args.length ) {
 			var temp = args[i];
 			switch (temp) {
@@ -48,12 +48,12 @@ class Main {
 		Sys.println('
 ::sprojectName::
 
-how to use: 
+how to use:
 neko ::sprojectName:: -cd \'path/to/folder\'
 
 	-help : show this help
-	-cd or -folder : path to project folder 		
-		
+	-cd or -folder : path to project folder
+
 ');
 	}
 

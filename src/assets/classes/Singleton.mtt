@@ -15,6 +15,6 @@ class ::classname::Singleton
     }
 
     private function new () {}  // private constructor
-	
-	
+
+
 }

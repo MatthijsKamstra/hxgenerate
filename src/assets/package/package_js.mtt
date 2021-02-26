@@ -12,7 +12,7 @@
 	"dependencies": {
 	},
 	"devDependencies": {
-		"livereload": "0.6.0",
-		"onchange": "3.0.2"
+		"livereload": "0.9.1",
+		"onchange": "7.1.0"
 	}
 }

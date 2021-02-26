@@ -3,16 +3,13 @@ package gen.main;
 using StringTools;
 
 class MainJS extends MainBase implements IMainBase {
-
 	public function new() {
 		super();
 		init();
 	}
 
-	function init ()
-	{
-		_import =
-'
+	function init() {
+		_import = '
 import js.Browser.*;
 import js.Browser;
 import js.html.*;
@@ -20,16 +17,14 @@ import js.html.*;
 import model.constants.App;
 ';
 
-		_vars =
-'
+		_vars = '
 	var container : js.html.DivElement;
 ';
 
-		_func =
-'
+		_func = '
 	function init() {
 		document.addEventListener("DOMContentLoaded", function(event) {
-			console.log(\'$${App.NAME} Dom ready :: build: $${App.BUILD} \');
+			console.log(\'$${App.NAME} Dom ready :: build: $${App.getBuildDate()} \');
 
 			// var container = document.getElementById("prop");
 			// container.innerHTML = \'html\';
@@ -72,11 +67,11 @@ import model.constants.App;
 		req.request(true);  // false=GET, true=POST
 	}
 ';
+
 	}
 
 	// override public function template() : String
 	// {
 	// 	return baseTemplate.replace(IMPORT,import).replace(VARS, vars).replace(FUNC, func);
 	// }
-
 }

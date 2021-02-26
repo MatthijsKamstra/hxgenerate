@@ -3,16 +3,13 @@ package gen.main;
 using StringTools;
 
 class MainNode extends MainBase implements IMainBase {
-
 	public function new() {
 		super();
 		init();
 	}
 
-	function init ()
-	{
-		_import =
-'
+	function init() {
+		_import = '
 import js.Node.*;
 import js.Node;
 import js.Node.console;
@@ -31,15 +28,13 @@ using StringTools;
 
 ';
 
-		_vars =
-'
+		_vars = '
 	var app : Dynamic;
 	var server : Dynamic;
 	var io : Dynamic;
 ';
 
-		_func =
-'
+		_func = '
 	function init () {
 
 		console.log(\'init :: build: $${App.BUILD} \');
@@ -106,5 +101,4 @@ using StringTools;
 	// {
 	// 	return baseTemplate.replace(IMPORT,import).replace(VARS, vars).replace(FUNC, func);
 	// }
-
 }

@@ -3,22 +3,18 @@ package gen.main;
 using StringTools;
 
 class MainCS extends MainBase implements IMainBase {
-
 	public function new() {
 		super();
 		init();
 	}
 
-	function init ()
-	{
-		_import =
-'
+	function init() {
+		_import = '
 import haxe.io.Path;
 import model.constants.App;
 ';
 
-		_vars =
-'
+		_vars = '
 	private var json:Dynamic;
 
 	typedef User = {
@@ -46,8 +42,7 @@ import model.constants.App;
 	}
 ';
 
-		_func =
-'
+		_func = '
 	function init() {
 		trace ("json example");
 
@@ -82,11 +77,11 @@ import model.constants.App;
 	}
 
 ';
+
 	}
 
 	// override public function template() : String
 	// {
 	// 	return baseTemplate.replace(IMPORT,import).replace(VARS, vars).replace(FUNC, func);
 	// }
-
 }

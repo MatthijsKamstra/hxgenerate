@@ -3,18 +3,15 @@ package gen.build;
 using StringTools;
 
 class HxmlNode extends HxmlBase implements IHxmlBase {
-
 	public function new(?isDebug = true) {
 		super(isDebug);
 		init();
 	}
 
-	function init ()
-	{
-		_name   = "Node.js";
-		_libs   = '-lib js-kit\n-lib hxnodejs';
-		_target =
-'-js bin/::sprojectName::.js
+	function init() {
+		_name = "Node.js";
+		_libs = '-lib js-kit\n-lib hxnodejs';
+		_target = '-js bin/::sprojectName::.js
 
 # You can use -D source-map-content (requires Haxe 3.1+) to have the .hx
 # files directly embedded into the map file, this way you only have to
@@ -29,12 +26,9 @@ class HxmlNode extends HxmlBase implements IHxmlBase {
 #-D js-es5
 ';
 
-		_run    =
-'# Run ::projectTarget:: application as node.js
+		_run = '# Run ::projectTarget:: application as node.js
 # -cmd cd bin
 # -cmd node ::sprojectName::.js
 ';
-
 	}
-
 }

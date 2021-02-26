@@ -3,26 +3,24 @@ package gen.build;
 using StringTools;
 
 class HxmlBase implements IHxmlBase {
+	public var isDebug:Bool;
 
-	public var isDebug : Bool;
-
-	public var NAME   = '::targetname::';
-	public var LIBS   = '::libs::';
+	public var NAME = '::targetname::';
+	public var LIBS = '::libs::';
 	public var TARGET = '::target::';
-	public var RUN    = '::run::';
-	public var DEBUG  = '::debug::';
-	public var STATE  = '::STATE::';
+	public var RUN = '::run::';
+	public var DEBUG = '::debug::';
+	public var STATE = '::STATE::';
 
-	public var _name   = 'Haxe';
-	public var _libs   = '#-lib foobar';
+	public var _name = 'Haxe';
+	public var _libs = '#-lib foobar';
 	public var _target = '-::projectTarget:: bin/::sprojectName::.::projectTarget::'; // value for specific target
-	public var _run    = ''; // value for specific target
+	public var _run = ''; // value for specific target
 
-	private var _debug  = '-debug';
+	private var _debug = '-debug';
 	private var _state = '-D state=debug';
 
-	public var baseTemplate =
-'# Libraries you like to use (http://lib.haxe.org/)
+	public var baseTemplate = '# Libraries you like to use (http://lib.haxe.org/)
 ::libs::
 
 # Integrate files to classpath
@@ -63,17 +61,18 @@ class HxmlBase implements IHxmlBase {
 
 	public function new(isDebug) {
 		this.isDebug = isDebug;
-		if(!this.isDebug){
-			_debug  = '#-debug\n\n--no-traces';
+		if (!this.isDebug) {
+			_debug = '#-debug\n\n--no-traces';
 			_state = '-D state=release';
 		}
 	}
 
-	public function template() : String
-	{
-		return baseTemplate.replace(NAME,_name).replace(LIBS,_libs).replace(TARGET,_target).replace(RUN,_run).replace(DEBUG,_debug).replace(STATE,_state);
+	public function template():String {
+		return baseTemplate.replace(NAME, _name)
+			.replace(LIBS, _libs)
+			.replace(TARGET, _target)
+			.replace(RUN, _run)
+			.replace(DEBUG, _debug)
+			.replace(STATE, _state);
 	}
-
-
-
 }

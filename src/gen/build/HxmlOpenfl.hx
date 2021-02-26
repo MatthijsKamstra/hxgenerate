@@ -3,19 +3,15 @@ package gen.build;
 using StringTools;
 
 class HxmlJS extends HxmlBase implements IHxmlBase {
-
 	public function new(?isDebug = true) {
 		super(isDebug);
 		init();
 	}
 
-	function init ()
-	{
+	function init() {
 		targetName = "JavaScript";
-		_libs      = '#-lib format\n#-lib markdown\n';
-		_target    = '';
-		_run       = '';
+		_libs = '#-lib format\n#-lib markdown\n';
+		_target = '';
+		_run = '';
 	}
-
-
 }

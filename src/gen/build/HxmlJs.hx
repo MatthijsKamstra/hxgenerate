@@ -3,18 +3,15 @@ package gen.build;
 using StringTools;
 
 class HxmlJs extends HxmlBase implements IHxmlBase {
-
 	public function new(?isDebug = true) {
 		super(isDebug);
 		init();
 	}
 
-	function init ()
-	{
-		_name   = "JavaScript";
-		_libs   = '#-lib js-kit\n#-lib hxnodejs#\n# -lib vue\n# -lib hxexterns\n# -lib haxelow';
-		_target =
-'-::projectTarget:: bin/::sprojectName::.js
+	function init() {
+		_name = "JavaScript";
+		_libs = '# -lib js-kit\n# -lib hxnodejs#\n# -lib vue\n# -lib hxexterns\n# -lib haxelow';
+		_target = '-::projectTarget:: bin/::sprojectName::.js
 
 # You can use -D source-map-content (requires Haxe 3.1+) to have the .hx
 # files directly embedded into the map file, this way you only have to
@@ -23,13 +20,10 @@ class HxmlJs extends HxmlBase implements IHxmlBase {
 -D source-map-content
 ';
 
-		_run    =
-'# Run ::projectTarget:: application
+		_run = '# Run ::projectTarget:: application
 # -cmd cd bin
 # -cmd open -a Google\\ Chrome http://localhost:2000/
 # -cmd nekotools server
 ';
 	}
-
-
 }

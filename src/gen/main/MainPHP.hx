@@ -3,18 +3,13 @@ package gen.main;
 using StringTools;
 
 class MainPHP extends MainBase implements IMainBase {
-
-
-
 	public function new() {
 		super();
 		init();
 	}
 
-	function init ()
-	{
-		_import =
-'
+	function init() {
+		_import = '
 import haxe.web.Dispatch;
 import haxe.web.Dispatch.DispatchError;
 
@@ -25,11 +20,9 @@ import haxe.web.Dispatch.DispatchError;
 #end
 ';
 
-		_vars =
-'';
+		_vars = '';
 
-		_func =
-'
+		_func = '
 	function init(){
 		// trace("::projectName::");
 		try {
@@ -46,5 +39,4 @@ import haxe.web.Dispatch.DispatchError;
 	// {
 	// 	return baseTemplate.replace(IMPORT,import).replace(VARS, vars).replace(FUNC, func);
 	// }
-
 }

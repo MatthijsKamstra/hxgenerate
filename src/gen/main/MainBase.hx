@@ -3,18 +3,15 @@ package gen.main;
 using StringTools;
 
 class MainBase implements IMainBase {
-
-	public var FUNC   = '::func::';
+	public var FUNC = '::func::';
 	public var IMPORT = '::import::';
-	public var VARS   = '::vars::';
-
+	public var VARS = '::vars::';
 
 	public var _import = '';
-	public var _vars   = '';
-	public var _func   = '';
+	public var _vars = '';
+	public var _func = '';
 
-	public var baseTemplate =
-'package;
+	public var baseTemplate = 'package;
 ::import::
 /**
  * @author ::projectAuthor::
@@ -35,9 +32,7 @@ class ::classname:: {
 
 	public function new() {}
 
-	public function template() : String
-	{
-		return baseTemplate.replace(IMPORT,_import).replace(VARS,_vars).replace(FUNC,_func);
+	public function template():String {
+		return baseTemplate.replace(IMPORT, _import).replace(VARS, _vars).replace(FUNC, _func);
 	}
-
 }

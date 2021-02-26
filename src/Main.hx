@@ -1,10 +1,6 @@
-package ;
+package;
 
-
-import sys.io.File;
 import sys.io.FileOutput;
-import sys.FileSystem;
-
 import gen.main.*;
 import gen.build.*;
 
@@ -15,74 +11,85 @@ using StringTools;
  * MIT
  * http://www.matthijskamstra.nl
  */
-class Main
-{
+class Main {
 	/**
-	* 0.3.1 added tasks.json in vscode folder
-	* 0.3.0 added hxformat, vscode folder returns, small update on C# target
-	* 0.2.2 bootstrap version
-	* 0.2.1 bootstrap version, added project name to app constants
-	* 0.2.0 electron
-	* 0.1.8 cleaning up some file, add real data for Heroku: Procfile, .env, package.json
-	* 0.1.7 remove jQueryExtern, update bootstrap 4
-	* 0.1.6 remove VSCode folder
-	* 0.1.5 haxelib.json added, removed folder ref.
-	* 0.1.4 haxelib run added
-	* 0.1.3 initial files for meteor added
-	* 0.1.2 docker file added, in combination with gitlab, -x working for docker/gitlab
-	* 0.1.1 yml file for node.js projects (gitlab) / add .version file
-	* 0.1.0 bin favicon / hxml generation with debug / update haxe info and build_all / gitignore node_modules
-	* 0.0.9 build_debug build_release
-	* 0.0.8 removed _build_vscode again (hxml our now without -cmd etc stuff), Main-Node/PHP added
-	* 0.0.7 create custom Main.hx files based upon target
-	* 0.0.6 added openfl
-	* 0.0.5 Virtual studio code stuff added
-	* 0.0.4 neko target
-	* 0.0.3 -x added, using haxe.template
-	* 0.0.2 update all target, add more output nicities
-	* 0.0.1 initial
-	*/
-	private var VERSION : String = '0.3.1';
+	 * 0.3.2 small updates in vscode, package, formatting
+	 * 0.3.1 added tasks.json in vscode folder
+	 * 0.3.0 added hxformat, vscode folder returns, small update on C# target
+	 * 0.2.2 bootstrap version
+	 * 0.2.1 bootstrap version, added project name to app constants
+	 * 0.2.0 electron
+	 * 0.1.8 cleaning up some file, add real data for Heroku: Procfile, .env, package.json
+	 * 0.1.7 remove jQueryExtern, update bootstrap 4
+	 * 0.1.6 remove VSCode folder
+	 * 0.1.5 haxelib.json added, removed folder ref.
+	 * 0.1.4 haxelib run added
+	 * 0.1.3 initial files for meteor added
+	 * 0.1.2 docker file added, in combination with gitlab, -x working for docker/gitlab
+	 * 0.1.1 yml file for node.js projects (gitlab) / add .version file
+	 * 0.1.0 bin favicon / hxml generation with debug / update haxe info and build_all / gitignore node_modules
+	 * 0.0.9 build_debug build_release
+	 * 0.0.8 removed _build_vscode again (hxml our now without -cmd etc stuff), Main-Node/PHP added
+	 * 0.0.7 create custom Main.hx files based upon target
+	 * 0.0.6 added openfl
+	 * 0.0.5 Virtual studio code stuff added
+	 * 0.0.4 neko target
+	 * 0.0.3 -x added, using haxe.template
+	 * 0.0.2 update all target, add more output nicities
+	 * 0.0.1 initial
+	 */
+	private var VERSION:String = '0.3.1';
 
-	private var projectFolder 	: String = '';
-	private var projectTarget 	: String = 'js';
-	private var projectName 	: String = 'Foobar';
-	private var projectAuthor 	: String = 'Matthijs Kamstra aka [mck]';
-	private var projectLicense 	: String = 'MIT';
-	private var projectWebsite 	: String = '';
-	private var projectXType 	: Array<String> = [];
+	private var projectFolder:String = '';
+	private var projectTarget:String = 'js';
+	private var projectName:String = 'Foobar';
+	private var projectAuthor:String = 'Matthijs Kamstra aka [mck]';
+	private var projectLicense:String = 'MIT';
+	private var projectWebsite:String = '';
+	private var projectXType:Array<String> = [];
 
 	// private var targetArr : Array<String> = ["cpp", "js", "javascript", "flash", "neko", "php", "cs", "java", "python", 'lua', 'node', 'nodejs', 'node.js', 'openfl'];
-	private var targetArr : Array<String> = ["cpp", "js", "flash", "neko", "php", "cs", "java", "python", 'lua', 'node', 'openfl'];
-	private var xtargetArr : Array<String> = ['test','flux','openfl','heroku','gitlab','docker', 'meteor', 'electron'];
+	private var targetArr:Array<String> = [
+		"cpp", "js", "flash", "neko", "php", "cs", "java", "python", 'lua', 'node', 'openfl'
+	];
+	private var xtargetArr:Array<String> = ['test', 'flux', 'openfl', 'heroku', 'gitlab', 'docker', 'meteor', 'electron'];
 
-	var isXperimental: Bool = false;
+	var isXperimental:Bool = false;
 
-	public function new(?args : Array<String>) : Void
-	{
+	public function new(?args:Array<String>):Void {
 		readConfig();
 
-		var args : Array<String> = args;
+		var args:Array<String> = args;
 
-		var isFolderSet : Bool = false;
+		var isFolderSet:Bool = false;
 
-		for ( i in 0 ... args.length ) {
+		for (i in 0...args.length) {
 			var temp = args[i];
 			switch (temp) {
-				case '-cd','-folder': 		projectFolder = validateFolder(args[i+1]); isFolderSet = true;
-				case '-name', '-n': 		projectName = args[i+1];
-				case '-license', '-l': 		projectLicense = args[i+1];
-				case '-author','-a': 		projectAuthor = args[i+1];
-				case '-target','-t': 		projectTarget = validateTarget(args[i+1]);
-				case '-website','-w': 		projectWebsite = args[i+1];
-				case '-help','-h': 			showHelp();
-				case '-x': 					projectXType.push(validateXType(args[i+1])); isXperimental = true;
+				case '-cd', '-folder':
+					projectFolder = validateFolder(args[i + 1]);
+					isFolderSet = true;
+				case '-name', '-n':
+					projectName = args[i + 1];
+				case '-license', '-l':
+					projectLicense = args[i + 1];
+				case '-author', '-a':
+					projectAuthor = args[i + 1];
+				case '-target', '-t':
+					projectTarget = validateTarget(args[i + 1]);
+				case '-website', '-w':
+					projectWebsite = args[i + 1];
+				case '-help', '-h':
+					showHelp();
+				case '-x':
+					projectXType.push(validateXType(args[i + 1]));
+					isXperimental = true;
 
-				// default : trace ("case '"+temp+"': trace ('"+temp+"');");
+					// default : trace ("case '"+temp+"': trace ('"+temp+"');");
 			}
 		}
 
-		if (!isFolderSet){
+		if (!isFolderSet) {
 			Sys.println('ERROR :: Sorry I need a folder to export to');
 			showHelp();
 			return;
@@ -93,30 +100,30 @@ class Main
 		showSettings();
 
 		createFolder(sanitize(projectName));
-		createFolder(sanitize(projectName)+'/bin');
-		createFolder(sanitize(projectName)+'/src');
-		createFolder(sanitize(projectName)+'/docs');
-		createFolder(sanitize(projectName)+'/_build');
-		createFolder(sanitize(projectName)+'/.vscode');
+		createFolder(sanitize(projectName) + '/bin');
+		createFolder(sanitize(projectName) + '/src');
+		createFolder(sanitize(projectName) + '/docs');
+		createFolder(sanitize(projectName) + '/_build');
+		createFolder(sanitize(projectName) + '/.vscode');
 
-		createHx(sanitize(projectName)+'/src','Main.hx');
+		createHx(sanitize(projectName) + '/src', 'Main.hx');
 		createTargetSpecific(projectTarget);
-		createBuildTargets(sanitize(projectName)+'/_build');
-		createHxmlAll(sanitize(projectName),'build_all.hxml');
-		createHxml(sanitize(projectName),'build.hxml', projectTarget);
-		createHxml(sanitize(projectName),'build_release.hxml', projectTarget, false);
-		createHxml(sanitize(projectName),'build_debug.hxml', projectTarget, true);
-		createHaxelib(sanitize(projectName),'haxelib.json');
-		createPackage(sanitize(projectName),'package.json', projectTarget);
-		createReadme(sanitize(projectName),'README.MD');
-		createReadme(sanitize(projectName),'README_HAXE.MD', true);
-		createBuild(sanitize(projectName),'BUILD.MD');
-		createTodo(sanitize(projectName),'TODO.MD');
-		createGitignore(sanitize(projectName),'.gitignore');
-		createIcon(sanitize(projectName),'icon.png');
-		createHxformat(sanitize(projectName),'hxformat.json');
-		createFavicon(sanitize(projectName)+'/bin');
-		createVSCode(sanitize(projectName)+'/.vscode');
+		createBuildTargets(sanitize(projectName) + '/_build');
+		createHxmlAll(sanitize(projectName), 'build_all.hxml');
+		createHxml(sanitize(projectName), 'build.hxml', projectTarget);
+		createHxml(sanitize(projectName), 'build_release.hxml', projectTarget, false);
+		createHxml(sanitize(projectName), 'build_debug.hxml', projectTarget, true);
+		createHaxelib(sanitize(projectName), 'haxelib.json');
+		createPackage(sanitize(projectName), 'package.json', projectTarget);
+		createReadme(sanitize(projectName), 'README.MD');
+		createReadme(sanitize(projectName), 'README_HAXE.MD', true);
+		createBuild(sanitize(projectName), 'BUILD.MD');
+		createTodo(sanitize(projectName), 'TODO.MD');
+		createGitignore(sanitize(projectName), '.gitignore');
+		createIcon(sanitize(projectName), 'icon.png');
+		createHxformat(sanitize(projectName), 'hxformat.json');
+		createFavicon(sanitize(projectName) + '/bin');
+		createVSCode(sanitize(projectName) + '/.vscode');
 		createVersion(sanitize(projectName));
 
 		writeConfig();
@@ -124,44 +131,44 @@ class Main
 		// createZip();
 		// createImage();
 
-		if(isXperimental) createXperimental(projectXType);
+		if (isXperimental)
+			createXperimental(projectXType);
 
 		Sys.println('HxGenerate :: done');
 	}
 
 	// ____________________________________ validate ____________________________________
 
-	public function validateTarget (target:String) : String
-	{
+	public function validateTarget(target:String):String {
 		var isValidTarget = false;
 		// [mck] maybe some extra checks for 'node, nodejs, node.js', 'js, javascript, JavaScript'
-		for ( i in 0 ... targetArr.length ) {
-			if(target.toLowerCase() == targetArr[i]) isValidTarget = true;
+		for (i in 0...targetArr.length) {
+			if (target.toLowerCase() == targetArr[i])
+				isValidTarget = true;
 		}
-		if(!isValidTarget) Sys.println('ERROR :: I don\'t know this target (${target}), must be an experimental');
+		if (!isValidTarget)
+			Sys.println('ERROR :: I don\'t know this target (${target}), must be an experimental');
 		return target.toLowerCase();
 	}
 
-	function validateXType (type:String) : String
-	{
+	function validateXType(type:String):String {
 		var str = '';
-		if(type != null && !type.startsWith('-')){
+		if (type != null && !type.startsWith('-')) {
 			str = type;
 		}
 		return str;
 	}
 
 	/*
-	*  clean up folder structure
-	* 	 - no spaces at the start and end of the path
-	* 	 - has to end with a backslash ("/")
-	* 	 - remove \ to escape folder structures with spaces in it `Volume/foobar/this\ is\ bad/`
-	*/
-	function validateFolder (folder:String) : String
-	{
+	 *  clean up folder structure
+	 * 	 - no spaces at the start and end of the path
+	 * 	 - has to end with a backslash ("/")
+	 * 	 - remove \ to escape folder structures with spaces in it `Volume/foobar/this\ is\ bad/`
+	 */
+	function validateFolder(folder:String):String {
 		folder = folder.ltrim().rtrim();
-		folder = folder.replace("\\ "," ");
-		if (folder.charAt(folder.length-1) != "/"){
+		folder = folder.replace("\\ ", " ");
+		if (folder.charAt(folder.length - 1) != "/") {
 			folder += "/";
 		}
 		return folder;
@@ -172,59 +179,53 @@ class Main
 	 *		- name must be lower-case
 	 * 		- no spaces in the name
 	 */
-	private function sanitize(str:String) : String
-	{
-		return str.replace('.', '_').replace(' ', '_').replace(':', '').replace('/','').replace('+','p').toLowerCase();
+	private function sanitize(str:String):String {
+		return str.replace('.', '_').replace(' ', '_').replace(':', '').replace('/', '').replace('+', 'p').toLowerCase();
 	}
 
 	// ____________________________________ config ____________________________________
 
-	function readConfig() : Void
-	{
+	function readConfig():Void {
 		var folder = Sys.getCwd();
-		var json : HxGenConfig;
+		var json:HxGenConfig;
 		if (sys.FileSystem.exists(folder + 'hxgenerate.json')) {
-			var str = (sys.io.File.getContent(folder +  'hxgenerate.json'));
+			var str = (sys.io.File.getContent(folder + 'hxgenerate.json'));
 			json = haxe.Json.parse(str);
-			projectFolder 	= json.folder;
-			projectTarget 	= json.target;
-			projectName 	= json.name;
-			projectAuthor  	= json.author;
-			projectLicense 	= json.license;
+			projectFolder = json.folder;
+			projectTarget = json.target;
+			projectName = json.name;
+			projectAuthor = json.author;
+			projectLicense = json.license;
 		} else {
 			Sys.println('ERROR: can\'t find the config (${folder}hxgenerate.json)');
 		}
 	}
 
-	function writeConfig() : Void
-	{
-		var temp : HxGenConfig =
-		{
-			folder : projectFolder,
-			target : projectTarget,
-			name : projectName,
-			author : projectAuthor,
-			license : projectLicense,
-			website : projectWebsite
+	function writeConfig():Void {
+		var temp:HxGenConfig = {
+			folder: projectFolder,
+			target: projectTarget,
+			name: projectName,
+			author: projectAuthor,
+			license: projectLicense,
+			website: projectWebsite
 		}
 
-		writeFile('../','hxgenerate.json',haxe.Json.stringify(temp));
+		writeFile('../', 'hxgenerate.json', haxe.Json.stringify(temp));
 		Sys.println('\tcreate config');
 	}
 
 	// ____________________________________ create files/folders ____________________________________
 
-	private function writeFile (path:String, name:String, content:String) : Void
-	{
+	private function writeFile(path:String, name:String, content:String):Void {
 		sys.io.File.saveContent(projectFolder + path + '/' + name, content);
 	}
 
-	private function createFolder(name:String) : Void
-	{
+	private function createFolder(name:String):Void {
 		if (!sys.FileSystem.exists(projectFolder + name)) {
 			try {
 				sys.FileSystem.createDirectory(projectFolder + name);
-			} catch(e:Dynamic){
+			} catch (e:Dynamic) {
 				trace(e);
 			}
 		}
@@ -241,49 +242,49 @@ class Main
 	// 	}
 	// 	// Sys.println('\tcreate folder - $name');
 	// }
-
 	// ____________________________________ create files ____________________________________
 
-	function createTargetSpecific (target:String){
+	function createTargetSpecific(target:String) {
 		switch (target) {
-		  	case 'neko' :
-			  	createWithTemplate(sanitize(projectName),'test.hxml', 'buildNeko');
+			case 'neko':
+				createWithTemplate(sanitize(projectName), 'test.hxml', 'buildNeko');
 			case 'python':
-				// do something clever for python
+			// do something clever for python
 			case 'js', 'node', 'nodejs', 'node.js':
 				// do something clever for nodejs AND Js
-				createFolder(sanitize(projectName)+'/bin/public');
-				createFolder(sanitize(projectName)+'/bin/public/css');
-				createFolder(sanitize(projectName)+'/bin/public/js');
-				createFolder(sanitize(projectName)+'/bin/public/img');
-				createFolder(sanitize(projectName)+'/bin/_data');
-				createFolder(sanitize(projectName)+'/src/api');
-				createFolder(sanitize(projectName)+'/src/model');
-				createFolder(sanitize(projectName)+'/src/model/vo');
-				createFolder(sanitize(projectName)+'/src/model/constants');
-				createWithTemplate(sanitize(projectName)+'/src/model/constants','App.hx', 'App');
-				createIndex(sanitize(projectName)+'/bin','index.html');
+				createFolder(sanitize(projectName) + '/bin/public');
+				createFolder(sanitize(projectName) + '/bin/public/css');
+				createFolder(sanitize(projectName) + '/bin/public/js');
+				createFolder(sanitize(projectName) + '/bin/public/img');
+				createFolder(sanitize(projectName) + '/bin/_data');
+				createFolder(sanitize(projectName) + '/src/api');
+				createFolder(sanitize(projectName) + '/src/model');
+				createFolder(sanitize(projectName) + '/src/model/vo');
+				createFolder(sanitize(projectName) + '/src/model/constants');
+				createWithTemplate(sanitize(projectName) + '/src/model/constants', 'App.hx', 'App');
+				createIndex(sanitize(projectName) + '/bin', 'index.html');
 			case 'php':
-				createFolder(sanitize(projectName)+'/bin/www');
-				createFolder(sanitize(projectName)+'/src/assets');
-				createFolder(sanitize(projectName)+'/src/assets/font');
-				createFolder(sanitize(projectName)+'/src/assets/img');
-				createFolder(sanitize(projectName)+'/src/assets/css');
-				createFolder(sanitize(projectName)+'/src/assets/mtt');
-				createFolder(sanitize(projectName)+'/src/model');
-				createFolder(sanitize(projectName)+'/src/model/constants');
-				createFolder(sanitize(projectName)+'/src/model/vo');
-				createFolder(sanitize(projectName)+'/src/view');
-				createFolder(sanitize(projectName)+'/src/controller');
+				createFolder(sanitize(projectName) + '/bin/www');
+				createFolder(sanitize(projectName) + '/src/assets');
+				createFolder(sanitize(projectName) + '/src/assets/font');
+				createFolder(sanitize(projectName) + '/src/assets/img');
+				createFolder(sanitize(projectName) + '/src/assets/css');
+				createFolder(sanitize(projectName) + '/src/assets/mtt');
+				createFolder(sanitize(projectName) + '/src/model');
+				createFolder(sanitize(projectName) + '/src/model/constants');
+				createFolder(sanitize(projectName) + '/src/model/vo');
+				createFolder(sanitize(projectName) + '/src/view');
+				createFolder(sanitize(projectName) + '/src/controller');
 				// createWithTemplate(sanitize(projectName)+'/src','Main.hx', 'MainPHP');
-				writeFile(sanitize(projectName)+'/src/assets','.htaccess', 'RewriteEngine On\n# RewriteBase /xbeacon/\n\n# Checks to see if the user is attempting to access a valid file,\n# such as an image or css document, if this isn\'t true it sends the\n# request to index.php\n#\nRewriteCond %{REQUEST_FILENAME} !-f\nRewriteCond %{REQUEST_FILENAME} !-d\n\n# Default is redirecting to index.php.\n# If you\'re using Neko, you must change this to index.n.\n#\nRewriteRule ^(.*)$ index.php/$1 [L]');
-				writeFile(sanitize(projectName)+'/src','Route.hx', '// clever stuff');
+				writeFile(sanitize(projectName) + '/src/assets', '.htaccess',
+					'RewriteEngine On\n# RewriteBase /xbeacon/\n\n# Checks to see if the user is attempting to access a valid file,\n# such as an image or css document, if this isn\'t true it sends the\n# request to index.php\n#\nRewriteCond %{REQUEST_FILENAME} !-f\nRewriteCond %{REQUEST_FILENAME} !-d\n\n# Default is redirecting to index.php.\n# If you\'re using Neko, you must change this to index.n.\n#\nRewriteRule ^(.*)$ index.php/$1 [L]');
+				writeFile(sanitize(projectName) + '/src', 'Route.hx', '// clever stuff');
 			case 'openfl':
-				createFolder(sanitize(projectName)+'/Assets');
-				createWithTemplate(sanitize(projectName),'project.xml', 'buildOpenfl');
-				createWithTemplate(sanitize(projectName)+'/src','Main.hx', 'MainOpenfl');
+				createFolder(sanitize(projectName) + '/Assets');
+				createWithTemplate(sanitize(projectName), 'project.xml', 'buildOpenfl');
+				createWithTemplate(sanitize(projectName) + '/src', 'Main.hx', 'MainOpenfl');
 
-			// default : trace ("case '"+target+"': trace ('"+target+"');");
+				// default : trace ("case '"+target+"': trace ('"+target+"');");
 		}
 	}
 
@@ -293,8 +294,7 @@ class Main
 	 * @param		path  			where Should the file be saved (example : sanitize(projectName)+'/src')
 	 * @param		name    		name of the file (example: 'Main.hx')
 	 */
-	private function createHx(path:String, name:String) : Void
-	{
+	private function createHx(path:String, name:String):Void {
 		switch (projectTarget) {
 			case 'js':
 				var template = new MainJS().template();
@@ -315,7 +315,6 @@ class Main
 		Sys.println('\tcreate ${name}');
 	}
 
-
 	/**
 	 * createWithTemplate
 	 *
@@ -323,10 +322,9 @@ class Main
 	 * @param		name    		name of the file (example: 'Main.hx')
 	 * @param		templateName	name of the template (default 'Main')
 	 */
-	function createWithTemplate(path:String, name:String, templateName:String) : Void
-	{
+	function createWithTemplate(path:String, name:String, templateName:String):Void {
 		var str = haxe.Resource.getString('$templateName');
-        createWithGenTemplate(path, name, str);
+		createWithGenTemplate(path, name, str);
 		// Sys.println('\tcreate template ${name}');
 	}
 
@@ -337,37 +335,34 @@ class Main
 	 * @param		name    		name of the file (example: 'Main.hx')
 	 * @param		template		template string
 	 */
-	function createWithGenTemplate(path:String, name:String, template:String) : Void
-	{
-        var t = new haxe.Template(template);
-        var output = t.execute({
-			projectAuthor : projectAuthor,
-			projectFolder : projectFolder,
+	function createWithGenTemplate(path:String, name:String, template:String):Void {
+		var t = new haxe.Template(template);
+		var output = t.execute({
+			projectAuthor: projectAuthor,
+			projectFolder: projectFolder,
 			projectLicense: projectLicense,
-			projectWebsite : projectWebsite,
-			projectName : projectName,
-			projectTarget : projectTarget,
-			sprojectName : sanitize(projectName),
-			classname : name.split('.')[0]
+			projectWebsite: projectWebsite,
+			projectName: projectName,
+			projectTarget: projectTarget,
+			sprojectName: sanitize(projectName),
+			classname: name.split('.')[0]
 		});
 
 		writeFile(path, name, output);
 		Sys.println('\tcreate template "${name}"');
 	}
 
-	private function createIndex(path:String, name:String) : Void
-	{
+	private function createIndex(path:String, name:String):Void {
 		createWithTemplate(path, name, "index");
 		Sys.println('\tcreate $name');
 	}
 
-	function createHxmlAll(path:String, name:String){
+	function createHxmlAll(path:String, name:String) {
 		createWithTemplate(path, name, "buildAll");
 		Sys.println('\tcreate $name');
 	}
 
-	private function createHxml(path:String, name:String, target:String, ?isDebug = true, ?content:String ) : Void
-	{
+	private function createHxml(path:String, name:String, target:String, ?isDebug = true, ?content:String):Void {
 		var template = '';
 
 		// [mck] every target should have it's own export setting
@@ -378,45 +373,53 @@ class Main
 			// case 'flash': 						str += '-swf bin/${sanitize(projectName)}.swf';
 			// case 'neko': 						str += '-${target} bin/${sanitize(projectName)}.n';
 			// case 'python': 						str += '-${target} bin/${sanitize(projectName)}.py';
-			case 'cpp': template  = new HxmlCpp(isDebug).template();
-			case 'cs': template  = new HxmlCs(isDebug).template();
-			case 'java': template  = new HxmlJava(isDebug).template();
-			case 'flash': template  = new HxmlFlash(isDebug).template();
-			case 'neko': template  = new HxmlNeko(isDebug).template();
-			case 'python': template  = new HxmlPython(isDebug).template();
-			case 'js' :	 template = new HxmlJs(isDebug).template();
-			case 'node': template = new HxmlNode(isDebug).template();
-			default :  template = new HxmlBase(isDebug).template();
+			case 'cpp':
+				template = new HxmlCpp(isDebug).template();
+			case 'cs':
+				template = new HxmlCs(isDebug).template();
+			case 'java':
+				template = new HxmlJava(isDebug).template();
+			case 'flash':
+				template = new HxmlFlash(isDebug).template();
+			case 'neko':
+				template = new HxmlNeko(isDebug).template();
+			case 'python':
+				template = new HxmlPython(isDebug).template();
+			case 'js':
+				template = new HxmlJs(isDebug).template();
+			case 'node':
+				template = new HxmlNode(isDebug).template();
+			default:
+				template = new HxmlBase(isDebug).template();
 		}
 
 		var t = new haxe.Template(template);
-    	var output = t.execute({
-			projectAuthor : projectAuthor,
-			projectFolder : projectFolder,
+		var output = t.execute({
+			projectAuthor: projectAuthor,
+			projectFolder: projectFolder,
 			projectLicense: projectLicense,
-			projectWebsite : projectWebsite,
-			projectName : projectName,
-			projectTarget : projectTarget,
-			sprojectName : sanitize(projectName),
-			classname : name.split('.')[0]
+			projectWebsite: projectWebsite,
+			projectName: projectName,
+			projectTarget: projectTarget,
+			sprojectName: sanitize(projectName),
+			classname: name.split('.')[0]
 		});
 
- 		if(content != null) output = content;
+		if (content != null)
+			output = content;
 
 		writeFile(path, name, output);
 		Sys.println('\t\tcreate ${target}.hxml');
 	}
 
-	function createBuildTargets (path:String)
-	{
+	function createBuildTargets(path:String) {
 		Sys.println('\tcreate all buildtarget');
-		for ( i in 0 ... targetArr.length ) {
+		for (i in 0...targetArr.length) {
 			createHxml(path, '${targetArr[i]}.hxml', targetArr[i]);
 		}
 	}
 
-	function createPackage(path:String, name:String, target:String) : Void
-	{
+	function createPackage(path:String, name:String, target:String):Void {
 		switch (target) {
 			case 'node':
 				createWithTemplate(path, name, "packageNode");
@@ -431,15 +434,13 @@ class Main
 		Sys.println('\tcreate createPackage');
 	}
 
-	function createHaxelib(path:String, name:String) : Void
-	{
+	function createHaxelib(path:String, name:String):Void {
 		createWithTemplate(path, name, "haxelib");
 
 		Sys.println('\tcreate createHaxelib');
 	}
 
-	function createVSCode (path:String)
-	{
+	function createVSCode(path:String) {
 		createWithTemplate(path, 'settings.json', "vscodeSettings");
 		createWithTemplate(path, 'launch.json', "vscodeLaunch");
 		createWithTemplate(path, 'tasks.json', "vscodeTasks");
@@ -449,16 +450,14 @@ class Main
 		Sys.println('\tcreate createVSCode');
 	}
 
-	function createVersion (path:String)
-	{
+	function createVersion(path:String) {
 		var str = '$VERSION';
 		writeFile(path, '.version', str);
 		Sys.println('\tcreate .version');
 	}
 
-	function createReadme(path:String, name:String, ?isHaxe:Bool = false) : Void
-	{
-		if(isHaxe){
+	function createReadme(path:String, name:String, ?isHaxe:Bool = false):Void {
+		if (isHaxe) {
 			createWithTemplate(path, name, "readmeHaxe");
 		} else {
 			createWithTemplate(path, name, "readme");
@@ -466,15 +465,13 @@ class Main
 		// Sys.println('\tcreate createReadme');
 	}
 
-	function createTodo(path:String, name:String) : Void
-	{
+	function createTodo(path:String, name:String):Void {
 		var str = '# TODO\n\n> a journey of a thousand miles begins with a single step\n\n';
 		writeFile(path, name, str);
 		Sys.println('\tcreate TODO');
 	}
 
-	function createIcon(path:String, name:String) : Void
-	{
+	function createIcon(path:String, name:String):Void {
 		var bytes = haxe.Resource.getBytes('icon');
 		var fo:FileOutput = sys.io.File.write(projectFolder + path + '/' + name, true);
 		fo.write(bytes);
@@ -482,15 +479,13 @@ class Main
 		Sys.println('\tcreate icon');
 	}
 
-	function createHxformat(path:String, name:String) : Void
-	{
+	function createHxformat(path:String, name:String):Void {
 		var str = '{"wrapping": {"methodChain": {"defaultWrap": "keep","rules": []}}}';
 		writeFile(path, name, str);
 		Sys.println('\tcreate hxformat.json');
 	}
 
-	function createFavicon(path:String) : Void
-	{
+	function createFavicon(path:String):Void {
 		var bytes = haxe.Resource.getBytes('favicon');
 		var fo:FileOutput = sys.io.File.write(projectFolder + path + '/favicon.ico', true);
 		fo.write(bytes);
@@ -498,32 +493,29 @@ class Main
 		Sys.println('\tcreate favicon');
 	}
 
-	function createZip()
-	{
+	function createZip() {
 		var bytes = haxe.Resource.getBytes('fluxzip');
 		var bytesInput = new haxe.io.BytesInput(bytes);
-		var entries = haxe.zip.Reader.readZip( bytesInput );
+		var entries = haxe.zip.Reader.readZip(bytesInput);
 
 		// [mck] flux specific
 
-		for (entry in entries){
-			if(entry.fileName.indexOf('__MACOSX') != -1) continue;
-			trace ("read entry " + entry.fileName + " : " + entry.fileSize);
+		for (entry in entries) {
+			if (entry.fileName.indexOf('__MACOSX') != -1)
+				continue;
+			trace("read entry " + entry.fileName + " : " + entry.fileSize);
 		}
-
 	}
 
-	function createImage()
-	{
+	function createImage() {
 		var bytes = haxe.Resource.getBytes('eboy');
 		var pngInput = new haxe.io.BytesInput(bytes);
 		var pngReader = new format.png.Reader(pngInput);
 		var pngData:format.png.Data = pngReader.read();
 
-
-		var data = format.png.Tools.buildRGB (400,400,bytes);
-        var out = sys.io.File.write(projectFolder + sanitize(projectName) + '/' + '_foobar.png',true);
-        new format.png.Writer(out).write(data);
+		var data = format.png.Tools.buildRGB(400, 400, bytes);
+		var out = sys.io.File.write(projectFolder + sanitize(projectName) + '/' + '_foobar.png', true);
+		new format.png.Writer(out).write(data);
 
 		// pngByt = Tools.extract32(pngData);
 		// var bmp:BitmapData = new BitmapData(33, 40);
@@ -533,9 +525,7 @@ class Main
 		// add(new FlxSprite(0, 0, bmp));
 	}
 
-
-	function createBuild(path:String, name:String) : Void
-	{
+	function createBuild(path:String, name:String):Void {
 		var str = '# Build ${projectName}
 
 Default methode to build this project
@@ -555,15 +545,20 @@ echo done
 
 ';
 
-	switch (projectTarget) {
-		case 'java': str += 'cd \'${projectFolder}${sanitize(projectName)}/bin/java\'';
-		case 'php': str += 'cd \'${projectFolder}${sanitize(projectName)}/bin/www\'';
-		case 'node', 'nodejs', 'node.js': str += '
+		switch (projectTarget) {
+			case 'java':
+				str += 'cd \'${projectFolder}${sanitize(projectName)}/bin/java\'';
+			case 'php':
+				str += 'cd \'${projectFolder}${sanitize(projectName)}/bin/www\'';
+			case 'node', 'nodejs', 'node.js':
+				str += '
 # Build ${projectName} and start node.js
 
 ```
 cd \'${projectFolder}${sanitize(projectName)}/bin/www\'';
-		case 'js': str += '
+
+			case 'js':
+				str += '
 # Build ${projectName} and start nekoserver and browser
 
 Same as previous, but also start nekoserver and open Google Chrome browser.
@@ -575,16 +570,19 @@ Great for testing js
 cd \'${projectFolder}${sanitize(projectName)}\'
 haxe build.hxml
 ';
-		default : str += 'cd \'${projectFolder}${sanitize(projectName)}\'';
-	}
 
-	str += '
+			default:
+				str += 'cd \'${projectFolder}${sanitize(projectName)}\'';
+		}
+
+		str += '
 open -a Google\\ Chrome http://localhost:2000/
 nekotools server
 
 ```
 ';
-	str += '
+
+		str += '
 # Build ${projectName} using NPM watch
 
 ```
@@ -609,11 +607,9 @@ npm install
 		Sys.println('\tcreate createBuild');
 	}
 
-
 	// TODO create custom gitignores
 	// ignore some files I generate
-	function createGitignore (path:String, name:String) : Void
-	{
+	function createGitignore(path:String, name:String):Void {
 		// var str = 'BUILD.MD\n.DS_Store\ntest.hxml\n';
 		// var str = '#https://github.com/github/gitignore\n\nBUILD.MD\n.DS_Store\ntest.hxml\n\nnode_modules\n\n_build\nbin\nbin_test\nbin_release';
 		var str = haxe.Resource.getString('GitIgnore');
@@ -621,22 +617,19 @@ npm install
 		Sys.println('\tcreate createGitignore');
 	}
 
-	function createXperimental(arr: Array<String>)
-	{
-
-		for (i in 0 ... arr.length) {
+	function createXperimental(arr:Array<String>) {
+		for (i in 0...arr.length) {
 			var type = arr[i].toLowerCase();
 			// [mck] should be a combination of project vs -x name
 			Sys.println('\tcreate "$type" specific files');
-			switch (type)
-			{
-				case 'test' :
-					createWithTemplate(sanitize(projectName)+'/src','Test.hx', 'Class');
-				case 'flux' :
-					createFolder(sanitize(projectName)+'/src/store');
+			switch (type) {
+				case 'test':
+					createWithTemplate(sanitize(projectName) + '/src', 'Test.hx', 'Class');
+				case 'flux':
+					createFolder(sanitize(projectName) + '/src/store');
 					createZip();
 					// createImage(); // [mck] needs more love
-					createWithTemplate(sanitize(projectName)+'/src/store','Store.hx', 'Singleton');
+					createWithTemplate(sanitize(projectName) + '/src/store', 'Store.hx', 'Singleton');
 				case 'openfl':
 					trace('fix this');
 				case 'heroku':
@@ -644,8 +637,7 @@ npm install
 					writeFile(sanitize(projectName) + "/bin", "Procfile", "web: node index.js");
 					writeFile(sanitize(projectName) + "/bin", ".env", "TIMES=2");
 					createPackage(sanitize(projectName) + "/bin", "package.json", "heroku");
-var buildheroku =
-'# BUILD heroku
+					var buildheroku = '# BUILD heroku
 
 <https://devcenter.heroku.com/articles/getting-started-with-nodejs#introduction>
 
@@ -690,7 +682,7 @@ heroku local web
 
 ';
 
-var build = '
+					var build = '
 -lib js-kit
 -lib hxnodejs
 -cp src
@@ -708,51 +700,49 @@ var build = '
 				case 'gitlab':
 					// trace(':: gitlab stuff ::');
 					// createGitLab(sanitize(projectName),'.gitlab-ci.yml', projectTarget);
-					createWithTemplate(sanitize(projectName),'.gitlab-ci.yml','Gitlab');
-					// createFolder(sanitize(projectName)+'/docs');
+					createWithTemplate(sanitize(projectName), '.gitlab-ci.yml', 'Gitlab');
+				// createFolder(sanitize(projectName)+'/docs');
 				case 'docker':
 					// trace(':: docker stuff ::');
-					createWithTemplate(sanitize(projectName),'Dockerfile','DockerFile');
-					createWithTemplate(sanitize(projectName),'.dockerignore','DockerIgnore');
+					createWithTemplate(sanitize(projectName), 'Dockerfile', 'DockerFile');
+					createWithTemplate(sanitize(projectName), '.dockerignore', 'DockerIgnore');
 				case 'electron':
 					trace(':: electron stuff ::');
 					// createWithTemplate(sanitize(projectName),'Dockerfile','DockerFile');
 					// createWithTemplate(sanitize(projectName),'.dockerignore','DockerIgnore');
-					createFolder(sanitize(projectName)+'/download');
+					createFolder(sanitize(projectName) + '/download');
 
-					createWithTemplate(sanitize(projectName)+'/bin', "package.json", 'packageElectron');
-					createWithTemplate(sanitize(projectName)+'/src', "Main.hx", 'MainElectron');
-					createWithTemplate(sanitize(projectName)+'/src', "MainMenu.hx", 'MainMenuElectron');
-					createWithTemplate(sanitize(projectName)+'/src', "MainServer.hx", 'MainServerElectron');
-
-
+					createWithTemplate(sanitize(projectName) + '/bin', "package.json", 'packageElectron');
+					createWithTemplate(sanitize(projectName) + '/src', "Main.hx", 'MainElectron');
+					createWithTemplate(sanitize(projectName) + '/src', "MainMenu.hx", 'MainMenuElectron');
+					createWithTemplate(sanitize(projectName) + '/src', "MainServer.hx", 'MainServerElectron');
 
 				case 'meteor':
 					trace(':: meteor stuff ::');
-					createFolder(sanitize(projectName)+'/www');
-					createFolder(sanitize(projectName)+'/src/client');
-					createFolder(sanitize(projectName)+'/src/client/templates');
-					createFolder(sanitize(projectName)+'/src/server');
-					createFolder(sanitize(projectName)+'/src/shared');
-					createFolder(sanitize(projectName)+'/src/shared/model');
-					createFolder(sanitize(projectName)+'/bin/server');
-					createFolder(sanitize(projectName)+'/bin/client');
-					createFolder(sanitize(projectName)+'/bin/client/lib');
-					createFolder(sanitize(projectName)+'/bin/client/lib/css');
-					createFolder(sanitize(projectName)+'/bin/client/lib/js');
-					createFolder(sanitize(projectName)+'/bin/client/style');
-					createFolder(sanitize(projectName)+'/bin/client/templates');
-					createFolder(sanitize(projectName)+'/bin/public');
-					createFolder(sanitize(projectName)+'/bin/public/img');
-					createFolder(sanitize(projectName)+'/bin/public/fonts');
+					createFolder(sanitize(projectName) + '/www');
+					createFolder(sanitize(projectName) + '/src/client');
+					createFolder(sanitize(projectName) + '/src/client/templates');
+					createFolder(sanitize(projectName) + '/src/server');
+					createFolder(sanitize(projectName) + '/src/shared');
+					createFolder(sanitize(projectName) + '/src/shared/model');
+					createFolder(sanitize(projectName) + '/bin/server');
+					createFolder(sanitize(projectName) + '/bin/client');
+					createFolder(sanitize(projectName) + '/bin/client/lib');
+					createFolder(sanitize(projectName) + '/bin/client/lib/css');
+					createFolder(sanitize(projectName) + '/bin/client/lib/js');
+					createFolder(sanitize(projectName) + '/bin/client/style');
+					createFolder(sanitize(projectName) + '/bin/client/templates');
+					createFolder(sanitize(projectName) + '/bin/public');
+					createFolder(sanitize(projectName) + '/bin/public/img');
+					createFolder(sanitize(projectName) + '/bin/public/fonts');
 
-					createWithTemplate(sanitize(projectName)+'/src/client/templates/','Home.hx','Class');
-					createWithTemplate(sanitize(projectName)+'/src/client/','Client.hx','Class');
-					createWithTemplate(sanitize(projectName)+'/src/server/','Server.hx','Class');
-					createWithTemplate(sanitize(projectName)+'/src/shared/','Shared.hx','Class');
-					createWithTemplate(sanitize(projectName)+'/src/shared/','AppRouter.hx','Class');
-					createWithTemplate(sanitize(projectName)+'/src/shared/model/','Model.hx','Class');
-					// writeFile(sanitize(projectName)+'/src/client/templates/', 'Home.hx', 'package template;\n\nclass Home {\n\tstatic public function init(){\n\n\t}\n}');
+					createWithTemplate(sanitize(projectName) + '/src/client/templates/', 'Home.hx', 'Class');
+					createWithTemplate(sanitize(projectName) + '/src/client/', 'Client.hx', 'Class');
+					createWithTemplate(sanitize(projectName) + '/src/server/', 'Server.hx', 'Class');
+					createWithTemplate(sanitize(projectName) + '/src/shared/', 'Shared.hx', 'Class');
+					createWithTemplate(sanitize(projectName) + '/src/shared/', 'AppRouter.hx', 'Class');
+					createWithTemplate(sanitize(projectName) + '/src/shared/model/', 'Model.hx', 'Class');
+				// writeFile(sanitize(projectName)+'/src/client/templates/', 'Home.hx', 'package template;\n\nclass Home {\n\tstatic public function init(){\n\n\t}\n}');
 
 				default:
 					trace('unknown x target: $type');
@@ -772,8 +762,7 @@ var build = '
 
 	// ____________________________________ show app stuff ____________________________________
 
-	function showSettings() : Void
-	{
+	function showSettings():Void {
 		Sys.println('------------------
 
 projectFolder : ${projectFolder}${sanitize(projectName)}
@@ -783,10 +772,10 @@ projectAuthor : ${projectAuthor}
 projectLicense : ${projectLicense}
 
 ------------------');
+
 	}
 
-
-	function showHelp () : Void {
+	function showHelp():Void {
 		Sys.println('
 HX-GENERATE :: version $VERSION
 
@@ -804,21 +793,20 @@ neko hxgenerate -cd \'path/to/folder\' -name \'${projectName}\' -license \'${pro
 	-x : experimental project generation : ${xtargetArr}
 
 ');
-	}
 
+	}
 
 	// ____________________________________ jump start everything ____________________________________
 
-    static public function main()
-    {
+	static public function main() {
 		// [mck] this doesn't work in neko...?
 
 		//  // print a message on the screen
-        // Sys.println("What's your name?");
-        // // read user input
-        // var input = Sys.stdin().readAll();
-        // // print the result
-        // Sys.println("Hello " + input);
+		// Sys.println("What's your name?");
+		// // read user input
+		// var input = Sys.stdin().readAll();
+		// // print the result
+		// Sys.println("Hello " + input);
 
 		// trace('environment: ' +  Sys.environment());
 		// trace('executablePath: ' + Sys.executablePath());
@@ -828,14 +816,13 @@ neko hxgenerate -cd \'path/to/folder\' -name \'${projectName}\' -license \'${pro
 	}
 }
 
-typedef HxGenConfig =
-{
-	var folder : String;// = 'path/to/folder';
-	var target : String;// = 'js';
-	var name : String;// = 'Foobar';
-	var author : String;// = 'Matthijs Kamstra aka [mck]';
-	var license : String;// = 'MIT';
-	var website : String;
+typedef HxGenConfig = {
+	var folder:String; // = 'path/to/folder';
+	var target:String; // = 'js';
+	var name:String; // = 'Foobar';
+	var author:String; // = 'Matthijs Kamstra aka [mck]';
+	var license:String; // = 'MIT';
+	var website:String;
 }
 
 enum HaxeTarget {
