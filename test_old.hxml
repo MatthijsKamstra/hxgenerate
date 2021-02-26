@@ -20,22 +20,22 @@
 #
 -cmd mkdir bin/example
 # generate examples of targets
--cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir/haxe/hxgenerate/bin/example' -name 'Example Javascript' -target js
--cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir/haxe/hxgenerate/bin/example' -name 'Example Node.js' -target node
--cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir/haxe/hxgenerate/bin/example' -name 'Example Java' -target java
--cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir/haxe/hxgenerate/bin/example' -name 'Example Python' -target python
--cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir/haxe/hxgenerate/bin/example' -name 'Example Neko' -target neko
--cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir/haxe/hxgenerate/bin/example' -name 'Example C++' -target cpp
--cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir/haxe/hxgenerate/bin/example' -name 'Example Flash' -target flash
--cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir/haxe/hxgenerate/bin/example' -name 'Example CS' -target cs
--cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir/haxe/hxgenerate/bin/example' -name 'Example Lua' -target lua
--cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir/haxe/hxgenerate/bin/example' -name 'Example Openfl' -target openfl
--cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir/haxe/hxgenerate/bin/example' -name 'Example PHP' -target php
+-cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir_haxe/hxgenerate/bin/example' -name 'Example Javascript' -target js
+-cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir_haxe/hxgenerate/bin/example' -name 'Example Node.js' -target node
+-cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir_haxe/hxgenerate/bin/example' -name 'Example Java' -target java
+-cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir_haxe/hxgenerate/bin/example' -name 'Example Python' -target python
+-cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir_haxe/hxgenerate/bin/example' -name 'Example Neko' -target neko
+-cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir_haxe/hxgenerate/bin/example' -name 'Example C++' -target cpp
+-cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir_haxe/hxgenerate/bin/example' -name 'Example Flash' -target flash
+-cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir_haxe/hxgenerate/bin/example' -name 'Example CS' -target cs
+-cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir_haxe/hxgenerate/bin/example' -name 'Example Lua' -target lua
+-cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir_haxe/hxgenerate/bin/example' -name 'Example Openfl' -target openfl
+-cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir_haxe/hxgenerate/bin/example' -name 'Example PHP' -target php
 
 
 # experiments
--cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir/haxe/hxgenerate/bin/example' -name 'Example Node.js Heroku' -target node -x heroku
--cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir/haxe/hxgenerate/bin/example' -name 'Example JS Gitlab' -target js -x gitlab
--cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir/haxe/hxgenerate/bin/example' -name 'Example Node.js Gitlab Docker' -target node -x gitlab -x docker
--cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir/haxe/hxgenerate/bin/example' -name 'Example JS Gitlab Meteor' -target js -x gitlab -x meteor
--cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir/haxe/hxgenerate/bin/example' -name 'Example Node.js Gitlab Electron' -target node  -x electron
+-cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir_haxe/hxgenerate/bin/example' -name 'Example Node.js Heroku' -target node -x heroku
+-cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir_haxe/hxgenerate/bin/example' -name 'Example JS Gitlab' -target js -x gitlab
+-cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir_haxe/hxgenerate/bin/example' -name 'Example Node.js Gitlab Docker' -target node -x gitlab -x docker
+-cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir_haxe/hxgenerate/bin/example' -name 'Example JS Gitlab Meteor' -target js -x gitlab -x meteor
+-cmd neko bin/hxgenerate.n -cd '/Users/matthijs/Documents/workingdir_haxe/hxgenerate/bin/example' -name 'Example Node.js Gitlab Electron' -target node  -x electron
