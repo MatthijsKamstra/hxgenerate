@@ -13,7 +13,7 @@
 	    "node": "node server/server.js",
 	    "nodemon": "nodemon --inspect=9229 server/server.js",
 	    "livereload": "livereload ./",
-	    "watch" : "npm-run-all --parallel livereload nodemon",
+	    "watch2" : "npm-run-all --parallel livereload nodemon",
 	    "launch:browser" : "open http://localhost:8000",
 	    "launch:mongobooster" : "open -a MongoBooster",
 	    "launch:mongodb" : "mongod",
