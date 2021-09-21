@@ -13,6 +13,7 @@ using StringTools;
  */
 class Main {
 	/**
+	 * 0.4.1 ficons
 	 * 0.4.0 bootstrap update, formatting readme/haxe-readme/index.mtt ..
 	 * 0.3.2 small updates in vscode, package, formatting
 	 * 0.3.1 added tasks.json in vscode folder
@@ -39,7 +40,7 @@ class Main {
 	 * 0.0.2 update all target, add more output nicities
 	 * 0.0.1 initial
 	 */
-	private var VERSION:String = '0.4.0';
+	private var VERSION:String = '0.4.1';
 
 	private var projectFolder:String = '';
 	private var projectTarget:String = 'js';

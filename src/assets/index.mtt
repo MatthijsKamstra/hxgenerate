@@ -19,13 +19,14 @@
 
 	<!-- google fonts -->
 	<link href="https://fonts.googleapis.com/css?family=Bitter:700" rel="stylesheet">
-	<!-- fontawesome -->
-	<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+
+	<!-- ficons -->
+	<link href="https://cdn.jsdelivr.net/npm/ficons@1.1.52/dist/ficons/font.css" rel="stylesheet">
 
 	<!-- custom css -->
 	<!--
 		<link rel="stylesheet" href="::sprojectName::.css" >
-		-->
+	-->
 	<style type="text/css">
 		#canvasOne {
 			position: absolute;
@@ -41,9 +42,8 @@
 	<div class="container">
 		<!-- Content here -->
 		<div class="row">
-			<div class="col">1 of 2</div>
-			<div class="col">2 of 2</div>
-		</div>
+			<div class="col">1 of 2 <i class="fa fa-arrow-right"></i></div>
+			<div class="col">2 of 2 <i class="fa fa-facebook"></i></div>		</div>
 	</div><!-- /.container -->
 
 	<!-- Option 1: Bootstrap Bundle with Popper -->
