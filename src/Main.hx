@@ -13,6 +13,7 @@ using StringTools;
  */
 class Main {
 	/**
+	 * 0.4.0 bootstrap update, formatting readme/haxe-readme/index.mtt
 	 * 0.3.2 small updates in vscode, package, formatting
 	 * 0.3.1 added tasks.json in vscode folder
 	 * 0.3.0 added hxformat, vscode folder returns, small update on C# target
