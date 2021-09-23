@@ -13,6 +13,7 @@ using StringTools;
  */
 class Main {
 	/**
+	 * 0.4.2 empty files added, `.nojekyll` `.gitkeep`
 	 * 0.4.1 ficons
 	 * 0.4.0 bootstrap update, formatting readme/haxe-readme/index.mtt ..
 	 * 0.3.2 small updates in vscode, package, formatting
@@ -40,7 +41,7 @@ class Main {
 	 * 0.0.2 update all target, add more output nicities
 	 * 0.0.1 initial
 	 */
-	private var VERSION:String = '0.4.1';
+	private var VERSION:String = '0.4.2';
 
 	private var projectFolder:String = '';
 	private var projectTarget:String = 'js';
@@ -127,6 +128,8 @@ class Main {
 		createFavicon(sanitize(projectName) + '/bin');
 		createVSCode(sanitize(projectName) + '/.vscode');
 		createVersion(sanitize(projectName));
+		createEmptyFile(sanitize(projectName) + '/docs', '.nojekyll');
+		createEmptyFile(sanitize(projectName) + '/docs', '.gitkeep');
 
 		writeConfig();
 
@@ -456,6 +459,11 @@ class Main {
 		var str = '$VERSION';
 		writeFile(path, '.version', str);
 		Sys.println('\tcreate .version');
+	}
+
+	function createEmptyFile(path:String, fileName:String) {
+		writeFile(path, '${fileName}', '');
+		Sys.println('\tcreate Empty File');
 	}
 
 	function createReadme(path:String, name:String, ?isHaxe:Bool = false):Void {
